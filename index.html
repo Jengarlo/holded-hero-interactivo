@@ -8,7 +8,7 @@
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
-  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qr-code-styling/lib/qr-code-styling.js"></script>
   <style>
     @font-face {
       font-family: 'Font Awesome 7 Pro';
@@ -84,30 +84,26 @@ const NAV = [
   { u:'\ue473', label:'Analítica'    },
 ];
 
-/* ── QR Code real y escaneable ──────────────────────────── */
+/* ── QR Code escaneable con estilo redondeado ───────────── */
 function QRImg({ url, size }) {
   const ref = React.useRef();
   React.useEffect(() => {
     if (!ref.current) return;
     ref.current.innerHTML = '';
-    new QRCode(ref.current, {
-      text: url,
+    const qr = new QRCodeStyling({
       width: size,
       height: size,
-      colorDark: '#111827',
-      colorLight: '#ffffff',
-      correctLevel: QRCode.CorrectLevel.M,
+      data: url,
+      margin: 0,
+      qrOptions: { errorCorrectionLevel: 'M' },
+      dotsOptions:          { type: 'rounded',       color: '#111827' },
+      cornersSquareOptions: { type: 'extra-rounded', color: '#111827' },
+      cornersDotOptions:    { type: 'dot',           color: '#111827' },
+      backgroundOptions:    { color: '#ffffff' },
     });
-    /* quita el img duplicado que genera qrcodejs en algunos casos */
-    setTimeout(() => {
-      const imgs = ref.current.querySelectorAll('img');
-      imgs.forEach(img => img.style.display = 'none');
-    }, 50);
+    qr.append(ref.current);
   }, [url, size]);
-  return (
-    <div ref={ref}
-      style={{width:size, height:size, lineHeight:0, display:'block'}} />
-  );
+  return <div ref={ref} style={{width:size, height:size, lineHeight:0}} />;
 }
 
 /* ─────────────────────────────────────────────────────────
@@ -164,14 +160,17 @@ function Sidebar() {
 }
 
 /* ─────────────────────────────────────────────────────────
-   INVOICE CARD  (664 × 576, absolute: left 49, top 34)
-   Posicionamiento absoluto fiel al Figma
+   INVOICE CARD  (664 × 576)
 ───────────────────────────────────────────────────────── */
 function InvoiceCard({ accent }) {
+  const P = 30;           /* padding horizontal uniforme */
+  const W = 664;
+  const inner = W - P*2; /* 604px ancho útil */
+
   return (
     <div style={{
       position:'absolute', left:49, top:20,
-      width:664, height:576,
+      width:W, height:576,
       background:'white',
       border:'1px solid #e5e7eb',
       borderRadius:4,
@@ -179,14 +178,14 @@ function InvoiceCard({ accent }) {
       overflow:'hidden',
     }}>
 
-      {/* ── HEADER  (height 72) ── */}
+      {/* ── HEADER  (height 90) ── */}
       <div style={{
-        position:'absolute', left:0, top:0, width:664, height:72,
+        position:'absolute', left:0, top:0, width:W, height:90,
         background:'white', borderBottom:'1px solid #f3f4f6',
       }}>
-        {/* Logo box morado */}
+        {/* Logo box */}
         <div style={{
-          position:'absolute', left:24, top:14,
+          position:'absolute', left:P, top:23,
           width:44, height:44,
           background:accent, borderRadius:10,
           display:'flex', alignItems:'center', justifyContent:'center',
@@ -195,80 +194,71 @@ function InvoiceCard({ accent }) {
         </div>
         {/* Nombre empresa */}
         <div style={{
-          position:'absolute', left:78, top:18,
+          position:'absolute', left:P+54, top:27,
           fontSize:14, fontWeight:600, color:'#111827', lineHeight:'14px',
         }}>Solar Tech S.A</div>
         {/* Dirección */}
         <div style={{
-          position:'absolute', left:78, top:38,
+          position:'absolute', left:P+54, top:47,
           fontSize:10, fontWeight:500, color:'#9ca3af', lineHeight:'12px',
         }}>Passeig de Gràcia, 78 · 08008 Barcelona</div>
-        {/* QR — escaneable, apunta a holded.com/verifactu */}
-        <div style={{
-          position:'absolute', left:590, top:10,
-          width:52, height:52,
-          background:'white',
-          borderRadius:8,
-          border:'1px solid #e5e7eb',
-          boxShadow:'0 1px 4px rgba(0,0,0,0.08)',
-          display:'flex', alignItems:'center', justifyContent:'center',
-          padding:3,
-        }}>
-          <QRImg url="https://www.holded.com/es/programa-facturacion-verifactu" size={44} />
+        {/* QR escaneable + redondeado, sin borde ni shadow */}
+        <div style={{position:'absolute', right:P, top:13}}>
+          <QRImg url="https://www.holded.com/es/programa-facturacion-verifactu" size={64} />
         </div>
       </div>
 
-      {/* ── BODY  (top 71, height 448) ── */}
-      <div style={{position:'absolute', left:0, top:71, width:664, height:448}}>
+      {/* ── BODY  (top 90) ── */}
+      <div style={{position:'absolute', left:0, top:90, width:W}}>
 
         {/* divider top */}
-        <div style={{position:'absolute', left:24, top:0, width:616, height:1, background:'#f3f4f6'}} />
+        <div style={{position:'absolute', left:P, top:0, width:inner, height:1, background:'#f3f4f6'}} />
 
         {/* CLIENTE */}
-        <div style={{position:'absolute', left:24, top:16, fontSize:9, fontWeight:700, color:'#9ca3af', letterSpacing:'0.06em'}}>CLIENTE</div>
-        <div style={{position:'absolute', left:24, top:30, fontSize:14, fontWeight:600, color:'#374151', lineHeight:'14px'}}>Proyecto Volta S.L.</div>
-        <div style={{position:'absolute', left:24, top:48, fontSize:10, fontWeight:500, color:'#9ca3af', lineHeight:'12px'}}>08027 Barcelona</div>
-        <div style={{position:'absolute', left:24, top:64, fontSize:10, fontWeight:500, color:'#9ca3af', lineHeight:'12px'}}>12345678A</div>
+        <div style={{position:'absolute', left:P, top:16, fontSize:9, fontWeight:700, color:'#9ca3af', letterSpacing:'0.06em'}}>CLIENTE</div>
+        <div style={{position:'absolute', left:P, top:30, fontSize:14, fontWeight:600, color:'#374151', lineHeight:'14px'}}>Proyecto Volta S.L.</div>
+        <div style={{position:'absolute', left:P, top:48, fontSize:10, fontWeight:500, color:'#9ca3af', lineHeight:'12px'}}>08027 Barcelona</div>
+        <div style={{position:'absolute', left:P, top:64, fontSize:10, fontWeight:500, color:'#9ca3af', lineHeight:'12px'}}>12345678A</div>
 
         {/* TOTAL top-right */}
-        <div style={{position:'absolute', left:544, top:16, fontSize:9, fontWeight:700, color:'#9ca3af', letterSpacing:'0.06em'}}>TOTAL</div>
-        <div style={{position:'absolute', left:544, top:30, fontSize:22, fontWeight:700, color:'#111827', lineHeight:'22px'}}>1991,66 €</div>
+        <div style={{position:'absolute', left:540, top:16, fontSize:9, fontWeight:700, color:'#9ca3af', letterSpacing:'0.06em'}}>TOTAL</div>
+        <div style={{position:'absolute', left:540, top:30, fontSize:22, fontWeight:700, color:'#111827', lineHeight:'22px'}}>1991,66 €</div>
 
         {/* divider */}
-        <div style={{position:'absolute', left:24, top:88, width:616, height:1, background:'#f3f4f6'}} />
+        <div style={{position:'absolute', left:P, top:88, width:inner, height:1, background:'#f3f4f6'}} />
 
         {/* Cabeceras columnas */}
-        <div style={{position:'absolute', left:24,  top:102, fontSize:9, fontWeight:700, color:'#9ca3af', letterSpacing:'0.06em'}}>DESCRIPCIÓN</div>
+        <div style={{position:'absolute', left:P,   top:102, fontSize:9, fontWeight:700, color:'#9ca3af', letterSpacing:'0.06em'}}>DESCRIPCIÓN</div>
         <div style={{position:'absolute', left:354, top:102, fontSize:9, fontWeight:700, color:'#9ca3af', letterSpacing:'0.06em'}}>CANTIDAD</div>
         <div style={{position:'absolute', left:455, top:102, fontSize:9, fontWeight:700, color:'#9ca3af', letterSpacing:'0.06em'}}>PRECIO</div>
-        <div style={{position:'absolute', left:575, top:102, fontSize:9, fontWeight:700, color:'#9ca3af', letterSpacing:'0.06em'}}>TOTAL</div>
+        <div style={{position:'absolute', left:571, top:102, fontSize:9, fontWeight:700, color:'#9ca3af', letterSpacing:'0.06em'}}>TOTAL</div>
 
         {/* divider */}
-        <div style={{position:'absolute', left:24, top:116, width:616, height:1, background:'#f3f4f6'}} />
+        <div style={{position:'absolute', left:P, top:116, width:inner, height:1, background:'#f3f4f6'}} />
 
         {/* Línea 1 — Diseño web */}
-        <div style={{position:'absolute', left:24,  top:128, fontSize:13, fontWeight:600, color:'#1f2937', lineHeight:'13px'}}>Diseño web</div>
-        <div style={{position:'absolute', left:24,  top:146, fontSize:11, fontWeight:400, color:'#9ca3af', lineHeight:'13px'}}>Landing page corporativa + responsive.</div>
+        <div style={{position:'absolute', left:P,   top:128, fontSize:13, fontWeight:600, color:'#1f2937', lineHeight:'13px'}}>Diseño web</div>
+        <div style={{position:'absolute', left:P,   top:146, fontSize:11, fontWeight:400, color:'#9ca3af', lineHeight:'13px'}}>Landing page corporativa + responsive.</div>
         <div style={{position:'absolute', left:375, top:132, fontSize:13, fontWeight:400, color:'#374151'}}>1</div>
         <div style={{position:'absolute', left:455, top:132, fontSize:13, fontWeight:400, color:'#374151'}}>1100 €</div>
-        <div style={{position:'absolute', left:575, top:132, fontSize:13, fontWeight:600, color:'#1f2937'}}>1100 €</div>
+        <div style={{position:'absolute', left:571, top:132, fontSize:13, fontWeight:600, color:'#1f2937'}}>1100 €</div>
 
         {/* divider */}
-        <div style={{position:'absolute', left:24, top:172, width:616, height:1, background:'#f9fafb'}} />
+        <div style={{position:'absolute', left:P, top:172, width:inner, height:1, background:'#f9fafb'}} />
 
         {/* Línea 2 — Branding */}
-        <div style={{position:'absolute', left:24,  top:184, fontSize:13, fontWeight:600, color:'#1f2937', lineHeight:'13px'}}>Branding</div>
-        <div style={{position:'absolute', left:24,  top:202, fontSize:11, fontWeight:400, color:'#9ca3af', lineHeight:'13px'}}>Logotipo, paleta de colores y guía de marca.</div>
+        <div style={{position:'absolute', left:P,   top:184, fontSize:13, fontWeight:600, color:'#1f2937', lineHeight:'13px'}}>Branding</div>
+        <div style={{position:'absolute', left:P,   top:202, fontSize:11, fontWeight:400, color:'#9ca3af', lineHeight:'13px'}}>Logotipo, paleta de colores y guía de marca.</div>
         <div style={{position:'absolute', left:375, top:188, fontSize:13, fontWeight:400, color:'#374151'}}>1</div>
         <div style={{position:'absolute', left:455, top:188, fontSize:13, fontWeight:400, color:'#374151'}}>546 €</div>
-        <div style={{position:'absolute', left:575, top:188, fontSize:13, fontWeight:600, color:'#1f2937'}}>546 €</div>
+        <div style={{position:'absolute', left:571, top:188, fontSize:13, fontWeight:600, color:'#1f2937'}}>546 €</div>
 
         {/* divider */}
-        <div style={{position:'absolute', left:24, top:226, width:616, height:1, background:'#f9fafb'}} />
+        <div style={{position:'absolute', left:P, top:226, width:inner, height:1, background:'#f9fafb'}} />
 
-        {/* Añadir línea — morado */}
+        {/* Añadir línea */}
         <button className="add-line-btn" style={{
-          position:'absolute', left:24, top:234,
+          position:'absolute', left:P, top:234,
           height:28, display:'flex', alignItems:'center', gap:6,
           color:accent, fontSize:11, fontWeight:500,
           background:'transparent', padding:0,
@@ -281,23 +271,23 @@ function InvoiceCard({ accent }) {
         </button>
 
         {/* divider footer */}
-        <div style={{position:'absolute', left:24, top:272, width:616, height:1, background:'#f3f4f6'}} />
+        <div style={{position:'absolute', left:P, top:272, width:inner, height:1, background:'#f3f4f6'}} />
 
         {/* Información de pago (izquierda) */}
-        <div style={{position:'absolute', left:24, top:288, fontSize:11, fontWeight:600, color:'#6b7280', lineHeight:'13px'}}>Información y detalles de pago</div>
-        <div style={{position:'absolute', left:24, top:309, fontSize:11, fontWeight:400, color:'#9ca3af', lineHeight:'13px'}}>Pago por transferencia bancaria</div>
+        <div style={{position:'absolute', left:P, top:288, fontSize:11, fontWeight:600, color:'#6b7280', lineHeight:'13px'}}>Información y detalles de pago</div>
+        <div style={{position:'absolute', left:P, top:309, fontSize:11, fontWeight:400, color:'#9ca3af', lineHeight:'13px'}}>Pago por transferencia bancaria</div>
 
         {/* Totales (derecha) */}
-        <div style={{position:'absolute', left:460, top:284, fontSize:10, fontWeight:500, color:'#9ca3af'}}>SUBTOTAL</div>
-        <div style={{position:'absolute', left:572, top:284, fontSize:12, fontWeight:400, color:'#6b7280'}}>1646 €</div>
+        <div style={{position:'absolute', left:456, top:284, fontSize:10, fontWeight:500, color:'#9ca3af'}}>SUBTOTAL</div>
+        <div style={{position:'absolute', left:571, top:284, fontSize:12, fontWeight:400, color:'#6b7280'}}>1646 €</div>
 
-        <div style={{position:'absolute', left:460, top:305, fontSize:10, fontWeight:500, color:'#9ca3af'}}>IVA (21%)</div>
-        <div style={{position:'absolute', left:572, top:305, fontSize:12, fontWeight:400, color:'#6b7280'}}>345,66 €</div>
+        <div style={{position:'absolute', left:456, top:305, fontSize:10, fontWeight:500, color:'#9ca3af'}}>IVA (21%)</div>
+        <div style={{position:'absolute', left:571, top:305, fontSize:12, fontWeight:400, color:'#6b7280'}}>345,66 €</div>
 
-        <div style={{position:'absolute', left:460, top:323, width:196, height:1, background:'#e5e7eb'}} />
+        <div style={{position:'absolute', left:456, top:323, width:178, height:1, background:'#e5e7eb'}} />
 
-        <div style={{position:'absolute', left:460, top:335, fontSize:12, fontWeight:700, color:'#111827'}}>TOTAL</div>
-        <div style={{position:'absolute', left:572, top:334, fontSize:13, fontWeight:700, color:'#111827'}}>1991,66 €</div>
+        <div style={{position:'absolute', left:456, top:335, fontSize:12, fontWeight:700, color:'#111827'}}>TOTAL</div>
+        <div style={{position:'absolute', left:571, top:334, fontSize:13, fontWeight:700, color:'#111827'}}>1991,66 €</div>
       </div>
     </div>
   );
