@@ -8,7 +8,20 @@
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    @font-face {
+      font-family: 'Font Awesome 7 Pro';
+      font-weight: 400;
+      font-style: normal;
+      src: url('https://raw.githubusercontent.com/Jengarlo/holded-hero-interactivo/main/fonts/fa7-pro-regular.otf') format('opentype');
+    }
+    @font-face {
+      font-family: 'Font Awesome 7 Pro';
+      font-weight: 900;
+      font-style: normal;
+      src: url('https://raw.githubusercontent.com/Jengarlo/holded-hero-interactivo/main/fonts/fa7-pro-solid.otf') format('opentype');
+    }
+  </style>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Inter', sans-serif; background: #0a0a0a; }
@@ -52,16 +65,22 @@ const A = {
 /* Swatches exactos del Figma */
 const SWATCHES = ['#7C5CFC','#0891B2','#16A34A','#EA580C','#1E293B'];
 
-/* Nav items exactos del Figma (6225:196) */
+/* Hex → rgba helper para el logo de la factura */
+const hexRgba = (hex, a) => {
+  const [r,g,b] = [1,3,5].map(i => parseInt(hex.slice(i,i+2),16));
+  return `rgba(${r},${g},${b},${a})`;
+};
+
+/* Nav items exactos del Figma (6225:196) — FA7 Pro Regular unicode */
 const NAV = [
-  { icon:'fa-house',        label:'Inicio'       },
-  { icon:'fa-chart-line',   label:'Ventas',  active:true },
-  { icon:'fa-receipt',      label:'Compras'      },
-  { icon:'fa-layer-group',  label:'Inventario'   },
-  { icon:'fa-landmark',     label:'Tesorería'    },
-  { icon:'fa-book',         label:'Contabilidad' },
-  { icon:'fa-file-invoice', label:'Impuestos'    },
-  { icon:'fa-chart-bar',    label:'Analítica'    },
+  { u:'\uf015', label:'Inicio'       },
+  { u:'\ue0e3', label:'Ventas',  active:true },
+  { u:'\uf543', label:'Compras'      },
+  { u:'\uf5fd', label:'Inventario'   },
+  { u:'\uf19c', label:'Tesorería'    },
+  { u:'\ue0e4', label:'Contabilidad' },
+  { u:'\uf56c', label:'Impuestos'    },
+  { u:'\ue473', label:'Analítica'    },
 ];
 
 /* ─────────────────────────────────────────────────────────
@@ -81,7 +100,7 @@ function Sidebar() {
     }}>
       {/* Holded logo mark */}
       <img src={A.diamond} alt="Holded"
-        style={{width:16.184, height:14.133, display:'block', marginBottom:20}} />
+        style={{width:16.184, height:14.133, display:'block', marginBottom:20, filter:'brightness(0) invert(1)' }} />
 
       {/* Separator */}
       <div style={{width:'100%', height:'0.9px', background:'#374151', marginBottom:10}} />
@@ -102,7 +121,7 @@ function Sidebar() {
               color:       active===i ? '#f3f4f6' : '#9ca3af',
               fontSize:13,
             }}>
-            <i className={`fa-solid ${n.icon}`} style={{fontSize:13, width:14, textAlign:'center'}} />
+            <span style={{fontFamily:'"Font Awesome 7 Pro"', fontWeight:400, fontSize:14, lineHeight:1, display:'block'}}>{n.u}</span>
           </button>
         ))}
       </div>
@@ -123,10 +142,10 @@ function Sidebar() {
    INVOICE CARD  (664 × 576, absolute: left 49, top 34)
    Posicionamiento absoluto fiel al Figma
 ───────────────────────────────────────────────────────── */
-function InvoiceCard() {
+function InvoiceCard({ accent }) {
   return (
     <div style={{
-      position:'absolute', left:49, top:34,
+      position:'absolute', left:49, top:20,
       width:664, height:576,
       background:'white',
       border:'1px solid #e5e7eb',
@@ -144,7 +163,7 @@ function InvoiceCard() {
         <div style={{
           position:'absolute', left:24, top:14,
           width:44, height:44,
-          background:'rgba(124,92,252,0.1)', borderRadius:10,
+          background:hexRgba(accent, 0.1), borderRadius:10,
           display:'flex', alignItems:'center', justifyContent:'center',
         }}>
           <img src={A.group} alt="" style={{width:25.658, height:26.131, display:'block'}} />
@@ -255,10 +274,9 @@ function InvoiceCard() {
    RIGHT PANEL  (377 × 600)
    padding: 34px top/bottom, 30px left/right | gap: 18px
 ───────────────────────────────────────────────────────── */
-function RightPanel() {
+function RightPanel({ accent, onAccentChange }) {
   const [tab,      setTab]      = useState('general');
   const [approved, setApproved] = useState(false);
-  const [accent,   setAccent]   = useState('#7C5CFC');
   const [msgs,     setMsgs]     = useState([
     { initials:'MG', color:'#0891b2', name:'M. García',
       time:'31/03/2026 · 10:45', text:'Factura revisada y aprobada. Todo correcto.' },
@@ -406,7 +424,7 @@ function RightPanel() {
             <SecTitle>Tema color</SecTitle>
             <div style={{display:'flex', alignItems:'center', gap:6}}>
               {SWATCHES.map(c => (
-                <button key={c} onClick={() => setAccent(c)}
+                <button key={c} onClick={() => onAccentChange(c)}
                   className="swatch-sq"
                   style={{
                     width:18, height:18, borderRadius:4,
@@ -498,7 +516,7 @@ function RightPanel() {
       }}>
         <button className="enviar-btn" style={{
           width:'100%', padding:'10px 20px',
-          background:accent, color:'white',
+          background:'#1963ef', color:'white',
           borderRadius:4, fontSize:12, fontWeight:600,
           display:'flex', alignItems:'center', justifyContent:'center', gap:6,
         }}>
@@ -518,6 +536,7 @@ function RightPanel() {
    APP ROOT
 ───────────────────────────────────────────────────────── */
 function App() {
+  const [accent, setAccent] = useState('#7C5CFC');
   return (
     <div style={{
       minHeight:'100vh', background:'#0a0a0a',
@@ -537,8 +556,8 @@ function App() {
         {/* Verifactu badge */}
         <img src={A.verifactu} alt="Verifactu Software Certificado"
           style={{
-            position:'absolute', top:-14, right:-12,
-            width:100, height:100, zIndex:10, display:'block',
+            position:'absolute', top:-59, right:-54,
+            width:112, height:112, zIndex:10, display:'block',
           }} />
 
         {/* ─── LA CARD ─── */}
@@ -558,10 +577,10 @@ function App() {
             width:776, background:'#f9fafb',
             position:'relative', flexShrink:0, overflow:'hidden',
           }}>
-            <InvoiceCard />
+            <InvoiceCard accent={accent} />
           </div>
 
-          <RightPanel />
+          <RightPanel accent={accent} onAccentChange={setAccent} />
         </div>
       </div>
     </div>
