@@ -42,6 +42,13 @@
     .enviar-btn:active { transform: scale(.98); }
     .add-line-btn { transition: color .12s; }
     .add-line-btn:hover { color: #6d3bef !important; }
+    .mockup-scale { transform-origin: top center; }
+    @media (max-width: 1350px) { .mockup-scale { transform: scale(0.82); } }
+    @media (max-width: 1100px) { .mockup-scale { transform: scale(0.68); } }
+    @media (max-width: 900px)  { .mockup-scale { transform: scale(0.55); } }
+    @media (max-width: 700px)  { .mockup-scale { transform: scale(0.43); } }
+    @media (max-width: 500px)  { .mockup-scale { transform: scale(0.31); } }
+    @media (max-width: 400px)  { .mockup-scale { transform: scale(0.25); } }
     .msg-input:focus { border-color: #1963ef !important; outline: none; }
   </style>
 </head>
@@ -93,6 +100,7 @@ function QRImg({ url, size }) {
     const qr = new QRCodeStyling({
       width: size,
       height: size,
+      type: 'svg',
       data: url,
       margin: 0,
       qrOptions: { errorCorrectionLevel: 'M' },
@@ -160,108 +168,97 @@ function Sidebar() {
 }
 
 /* ─────────────────────────────────────────────────────────
-   INVOICE CARD  (664 × 576)
+   INVOICE CARD  (664 × 576) — flex layout, líneas dinámicas
 ───────────────────────────────────────────────────────── */
 function InvoiceCard({ accent }) {
-  const P = 30;           /* padding horizontal uniforme */
-  const W = 664;
-  const inner = W - P*2; /* 604px ancho útil */
+  const P = 30, W = 664;
+
+  const [lines, setLines] = React.useState([
+    { id:1, name:'Diseño web',  desc:'Landing page corporativa + responsive.',     qty:1, price:1100 },
+    { id:2, name:'Branding',    desc:'Logotipo, paleta de colores y guía de marca.', qty:1, price:546  },
+  ]);
+
+  const addLine = () => setLines(l => [...l, { id:Date.now(), name:'Nuevo concepto', desc:'', qty:1, price:0 }]);
+
+  const subtotal = lines.reduce((s,l) => s + l.qty * l.price, 0);
+  const iva      = subtotal * 0.21;
+  const total    = subtotal + iva;
+
+  const fmt = n => {
+    const s = n.toFixed(2);
+    return (s.endsWith('.00') ? String(Math.round(n)) : s.replace('.',',')) + ' €';
+  };
+
+  const D = () => <div style={{height:1, background:'#f3f4f6', margin:`0 ${P}px`}} />;
 
   return (
     <div style={{
       position:'absolute', left:49, top:20,
       width:W, height:576,
-      background:'white',
-      border:'1px solid #e5e7eb',
-      borderRadius:4,
-      boxShadow:'0px 2px 6px 0px rgba(0,0,0,0.07)',
-      overflow:'hidden',
+      background:'white', border:'1px solid #e5e7eb',
+      borderRadius:4, boxShadow:'0px 2px 6px 0px rgba(0,0,0,0.07)',
+      display:'flex', flexDirection:'column', overflow:'hidden',
     }}>
 
-      {/* ── HEADER  (height 106) ── */}
-      <div style={{
-        position:'absolute', left:0, top:0, width:W, height:106,
-        background:'white', borderBottom:'1px solid #f3f4f6',
-      }}>
-        {/* Logo box */}
-        <div style={{
-          position:'absolute', left:P, top:31,
-          width:44, height:44,
-          background:accent, borderRadius:10,
-          display:'flex', alignItems:'center', justifyContent:'center',
-        }}>
-          <img src={A.group} alt="" style={{width:25.658, height:26.131, display:'block', filter:'brightness(0) invert(1)'}} />
+      {/* ── HEADER — altura exacta del logo (44px) + 22px arriba/abajo = 88px ── */}
+      <div style={{flexShrink:0, position:'relative', width:W, height:88, borderBottom:'1px solid #f3f4f6',
+        display:'flex', alignItems:'center', padding:`0 ${P}px`}}>
+        {/* Logo + texto en flex, altura fija igual al logo box */}
+        <div style={{display:'flex', alignItems:'flex-start', gap:10, height:44, flex:1, minWidth:0}}>
+          <div style={{width:44, height:44, flexShrink:0, background:accent, borderRadius:10,
+            display:'flex', alignItems:'center', justifyContent:'center'}}>
+            <img src={A.group} alt="" style={{width:25.658, height:26.131, display:'block', filter:'brightness(0) invert(1)'}} />
+          </div>
+          <div style={{display:'flex', flexDirection:'column', justifyContent:'space-between', height:44, minWidth:0}}>
+            <div style={{fontSize:13, fontWeight:700, color:'#111827', lineHeight:1}}>Solar Tech S.A</div>
+            <div>
+              <div style={{fontSize:10, fontWeight:500, color:'#9ca3af', lineHeight:'13px'}}>Passeig de Gràcia, 78</div>
+              <div style={{fontSize:10, fontWeight:500, color:'#9ca3af', lineHeight:'13px'}}>08008 Barcelona</div>
+            </div>
+          </div>
         </div>
-        {/* Nombre empresa */}
-        <div style={{
-          position:'absolute', left:P+54, top:35,
-          fontSize:14, fontWeight:600, color:'#111827', lineHeight:'14px',
-        }}>Solar Tech S.A</div>
-        {/* Dirección — línea propia con más espacio */}
-        <div style={{
-          position:'absolute', left:P+54, top:63,
-          fontSize:10, fontWeight:500, color:'#9ca3af', lineHeight:'12px',
-        }}>Passeig de Gràcia, 78 · 08008 Barcelona</div>
-        {/* QR — right edge alineado al mismo padding que el contenido (right:P) */}
-        <div style={{position:'absolute', right:P, top:13, width:80, height:80, overflow:'hidden'}}>
-          <QRImg url="https://www.holded.com/es/programa-facturacion-verifactu" size={80} />
+        {/* QR centrado verticalmente */}
+        <div style={{flexShrink:0, width:62, height:62, overflow:'hidden'}}>
+          <QRImg url="https://www.holded.com/es/programa-facturacion-verifactu" size={62} />
         </div>
       </div>
 
-      {/* ── BODY  (top 106) ── */}
-      <div style={{position:'absolute', left:0, top:106, width:W}}>
-
-        {/* divider top */}
-        <div style={{position:'absolute', left:P, top:0, width:inner, height:1, background:'#f3f4f6'}} />
-
-        {/* CLIENTE */}
+      {/* ── CLIENTE + TOTAL (100px) ── */}
+      <div style={{flexShrink:0, position:'relative', height:100, borderBottom:'1px solid #f3f4f6'}}>
         <div style={{position:'absolute', left:P, top:16, fontSize:9, fontWeight:700, color:'#9ca3af', letterSpacing:'0.06em'}}>CLIENTE</div>
-        <div style={{position:'absolute', left:P, top:30, fontSize:14, fontWeight:600, color:'#374151', lineHeight:'14px'}}>Proyecto Volta S.L.</div>
-        <div style={{position:'absolute', left:P, top:48, fontSize:10, fontWeight:500, color:'#9ca3af', lineHeight:'12px'}}>08027 Barcelona</div>
-        <div style={{position:'absolute', left:P, top:64, fontSize:10, fontWeight:500, color:'#9ca3af', lineHeight:'12px'}}>12345678A</div>
-
-        {/* TOTAL top-right */}
+        <div style={{position:'absolute', left:P, top:30, fontSize:14, fontWeight:600, color:'#374151'}}>Proyecto Volta S.L.</div>
+        <div style={{position:'absolute', left:P, top:50, fontSize:10, fontWeight:500, color:'#9ca3af'}}>08027 Barcelona</div>
+        <div style={{position:'absolute', left:P, top:66, fontSize:10, fontWeight:500, color:'#9ca3af'}}>12345678A</div>
         <div style={{position:'absolute', right:P, top:16, fontSize:9, fontWeight:700, color:'#9ca3af', letterSpacing:'0.06em', textAlign:'right'}}>TOTAL</div>
-        <div style={{position:'absolute', right:P, top:30, fontSize:22, fontWeight:700, color:'#111827', lineHeight:'22px', textAlign:'right'}}>1991,66 €</div>
+        <div style={{position:'absolute', right:P, top:30, fontSize:22, fontWeight:700, color:'#111827', textAlign:'right'}}>{fmt(total)}</div>
+      </div>
 
-        {/* divider */}
-        <div style={{position:'absolute', left:P, top:88, width:inner, height:1, background:'#f3f4f6'}} />
+      {/* ── CABECERAS COLUMNAS (37px) ── */}
+      <div style={{flexShrink:0, position:'relative', height:37, borderBottom:'1px solid #f3f4f6'}}>
+        <div style={{position:'absolute', left:P,   top:14, fontSize:9, fontWeight:700, color:'#9ca3af', letterSpacing:'0.06em'}}>DESCRIPCIÓN</div>
+        <div style={{position:'absolute', left:354, top:14, fontSize:9, fontWeight:700, color:'#9ca3af', letterSpacing:'0.06em'}}>CANTIDAD</div>
+        <div style={{position:'absolute', left:455, top:14, fontSize:9, fontWeight:700, color:'#9ca3af', letterSpacing:'0.06em'}}>PRECIO</div>
+        <div style={{position:'absolute', right:P,  top:14, fontSize:9, fontWeight:700, color:'#9ca3af', letterSpacing:'0.06em', textAlign:'right'}}>TOTAL</div>
+      </div>
 
-        {/* Cabeceras columnas */}
-        <div style={{position:'absolute', left:P,   top:102, fontSize:9, fontWeight:700, color:'#9ca3af', letterSpacing:'0.06em'}}>DESCRIPCIÓN</div>
-        <div style={{position:'absolute', left:354, top:102, fontSize:9, fontWeight:700, color:'#9ca3af', letterSpacing:'0.06em'}}>CANTIDAD</div>
-        <div style={{position:'absolute', left:455, top:102, fontSize:9, fontWeight:700, color:'#9ca3af', letterSpacing:'0.06em'}}>PRECIO</div>
-        <div style={{position:'absolute', right:P, top:102, fontSize:9, fontWeight:700, color:'#9ca3af', letterSpacing:'0.06em', textAlign:'right'}}>TOTAL</div>
-
-        {/* divider — padding igual arriba (14px) y abajo (14px) de los headers */}
-        <div style={{position:'absolute', left:P, top:125, width:inner, height:1, background:'#f3f4f6'}} />
-
-        {/* Línea 1 — Diseño web */}
-        <div style={{position:'absolute', left:P,   top:137, fontSize:13, fontWeight:600, color:'#1f2937', lineHeight:'13px'}}>Diseño web</div>
-        <div style={{position:'absolute', left:P,   top:155, fontSize:11, fontWeight:400, color:'#9ca3af', lineHeight:'13px'}}>Landing page corporativa + responsive.</div>
-        <div style={{position:'absolute', left:375, top:141, fontSize:13, fontWeight:400, color:'#374151'}}>1</div>
-        <div style={{position:'absolute', left:455, top:141, fontSize:13, fontWeight:400, color:'#374151'}}>1100 €</div>
-        <div style={{position:'absolute', right:P, top:141, fontSize:13, fontWeight:600, color:'#1f2937', textAlign:'right'}}>1100 €</div>
-
-        {/* divider */}
-        <div style={{position:'absolute', left:P, top:181, width:inner, height:1, background:'#f3f4f6'}} />
-
-        {/* Línea 2 — Branding */}
-        <div style={{position:'absolute', left:P,   top:193, fontSize:13, fontWeight:600, color:'#1f2937', lineHeight:'13px'}}>Branding</div>
-        <div style={{position:'absolute', left:P,   top:211, fontSize:11, fontWeight:400, color:'#9ca3af', lineHeight:'13px'}}>Logotipo, paleta de colores y guía de marca.</div>
-        <div style={{position:'absolute', left:375, top:197, fontSize:13, fontWeight:400, color:'#374151'}}>1</div>
-        <div style={{position:'absolute', left:455, top:197, fontSize:13, fontWeight:400, color:'#374151'}}>546 €</div>
-        <div style={{position:'absolute', right:P, top:197, fontSize:13, fontWeight:600, color:'#1f2937', textAlign:'right'}}>546 €</div>
-
-        {/* divider */}
-        <div style={{position:'absolute', left:P, top:235, width:inner, height:1, background:'#f3f4f6'}} />
-
-        {/* Añadir línea */}
-        <button className="add-line-btn" style={{
-          position:'absolute', left:P, top:243,
-          height:28, display:'flex', alignItems:'center', gap:6,
+      {/* ── LÍNEAS (scrollable) ── */}
+      <div style={{flex:1, overflowY:'auto', minHeight:0}}>
+        {lines.map((line, i) => (
+          <React.Fragment key={line.id}>
+            <div style={{position:'relative', height:52}}>
+              <div style={{position:'absolute', left:P,   top:10, fontSize:13, fontWeight:600, color:'#1f2937', lineHeight:'13px'}}>{line.name}</div>
+              <div style={{position:'absolute', left:P,   top:28, fontSize:11, fontWeight:400, color:'#9ca3af', lineHeight:'13px'}}>{line.desc}</div>
+              <div style={{position:'absolute', left:375, top:15, fontSize:13, fontWeight:400, color:'#374151'}}>{line.qty}</div>
+              <div style={{position:'absolute', left:455, top:15, fontSize:13, fontWeight:400, color:'#374151'}}>{line.price > 0 ? fmt(line.price) : '—'}</div>
+              <div style={{position:'absolute', right:P,  top:15, fontSize:13, fontWeight:600, color:'#1f2937', textAlign:'right'}}>{line.qty*line.price > 0 ? fmt(line.qty*line.price) : '—'}</div>
+            </div>
+            <D />
+          </React.Fragment>
+        ))}
+        <button className="add-line-btn" onClick={addLine} style={{
+          display:'flex', alignItems:'center', gap:6,
           color:accent, fontSize:11, fontWeight:500,
-          background:'transparent', padding:0,
+          background:'transparent', padding:`10px ${P}px`, height:38,
         }}>
           <svg width="10" height="10" viewBox="0 0 10 10">
             <line x1="5" y1="0" x2="5" y2="10" stroke={accent} strokeWidth="1.5"/>
@@ -269,25 +266,31 @@ function InvoiceCard({ accent }) {
           </svg>
           Añadir línea
         </button>
+      </div>
 
-        {/* divider footer */}
-        <div style={{position:'absolute', left:P, top:281, width:inner, height:1, background:'#f3f4f6'}} />
-
-        {/* Información de pago (izquierda) */}
-        <div style={{position:'absolute', left:P, top:297, fontSize:11, fontWeight:600, color:'#6b7280', lineHeight:'13px'}}>Información y detalles de pago</div>
-        <div style={{position:'absolute', left:P, top:318, fontSize:11, fontWeight:400, color:'#9ca3af', lineHeight:'13px'}}>Pago por transferencia bancaria</div>
-
-        {/* Totales (derecha) — labels alineados con columna PRECIO (left:455) */}
-        <div style={{position:'absolute', left:455, top:293, fontSize:10, fontWeight:500, color:'#9ca3af'}}>SUBTOTAL</div>
-        <div style={{position:'absolute', right:P, top:293, fontSize:12, fontWeight:400, color:'#6b7280', textAlign:'right'}}>1646 €</div>
-
-        <div style={{position:'absolute', left:455, top:314, fontSize:10, fontWeight:500, color:'#9ca3af'}}>IVA (21%)</div>
-        <div style={{position:'absolute', right:P, top:314, fontSize:12, fontWeight:400, color:'#6b7280', textAlign:'right'}}>345,66 €</div>
-
-        <div style={{position:'absolute', left:455, top:332, width:W-455-P, height:1, background:'#f3f4f6'}} />
-
-        <div style={{position:'absolute', left:455, top:344, fontSize:12, fontWeight:700, color:'#111827'}}>TOTAL</div>
-        <div style={{position:'absolute', right:P, top:343, fontSize:13, fontWeight:700, color:'#111827', textAlign:'right'}}>1991,66 €</div>
+      {/* ── FOOTER ── */}
+      <div style={{flexShrink:0, borderTop:'1px solid #f3f4f6', padding:`14px ${P}px`}}>
+        <div style={{display:'flex', justifyContent:'space-between', alignItems:'flex-start', gap:16}}>
+          <div>
+            <div style={{fontSize:11, fontWeight:600, color:'#6b7280', marginBottom:6}}>Información y detalles de pago</div>
+            <div style={{fontSize:11, fontWeight:400, color:'#9ca3af'}}>Pago por transferencia bancaria</div>
+          </div>
+          <div style={{minWidth:194}}>
+            <div style={{display:'flex', justifyContent:'space-between', marginBottom:5}}>
+              <span style={{fontSize:10, fontWeight:500, color:'#9ca3af'}}>SUBTOTAL</span>
+              <span style={{fontSize:12, fontWeight:400, color:'#6b7280'}}>{fmt(subtotal)}</span>
+            </div>
+            <div style={{display:'flex', justifyContent:'space-between', marginBottom:8}}>
+              <span style={{fontSize:10, fontWeight:500, color:'#9ca3af'}}>IVA (21%)</span>
+              <span style={{fontSize:12, fontWeight:400, color:'#6b7280'}}>{fmt(iva)}</span>
+            </div>
+            <div style={{height:1, background:'#f3f4f6', marginBottom:8}} />
+            <div style={{display:'flex', justifyContent:'space-between'}}>
+              <span style={{fontSize:12, fontWeight:700, color:'#111827'}}>TOTAL</span>
+              <span style={{fontSize:13, fontWeight:700, color:'#111827'}}>{fmt(total)}</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -427,7 +430,7 @@ function RightPanel({ accent, onAccentChange }) {
             <SecTitle>Categorización</SecTitle>
             <div style={{
               display:'flex', justifyContent:'space-between', alignItems:'center',
-              background:'#f9fafb', borderRadius:4, padding:'6px 8px',
+              padding:'4px 0',
             }}>
               <span style={{fontSize:10, fontWeight:500, color:'#9ca3af'}}>Cuenta contable</span>
               <div style={{
@@ -575,7 +578,7 @@ function App() {
         top:'50%', left:'50%', transform:'translate(-50%,-50%)',
       }} />
 
-      <div style={{position:'relative'}}>
+      <div className="mockup-scale" style={{position:'relative'}}>
         {/* Verifactu badge */}
         <img src={A.verifactu} alt="Verifactu Software Certificado"
           style={{
