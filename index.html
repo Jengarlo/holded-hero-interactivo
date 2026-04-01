@@ -277,16 +277,16 @@ function InvoiceCard({ accent }) {
         <div style={{position:'absolute', left:P, top:288, fontSize:11, fontWeight:600, color:'#6b7280', lineHeight:'13px'}}>Información y detalles de pago</div>
         <div style={{position:'absolute', left:P, top:309, fontSize:11, fontWeight:400, color:'#9ca3af', lineHeight:'13px'}}>Pago por transferencia bancaria</div>
 
-        {/* Totales (derecha) */}
-        <div style={{position:'absolute', right:P+178, top:284, fontSize:10, fontWeight:500, color:'#9ca3af'}}>SUBTOTAL</div>
+        {/* Totales (derecha) — labels alineados con columna PRECIO (left:455) */}
+        <div style={{position:'absolute', left:455, top:284, fontSize:10, fontWeight:500, color:'#9ca3af'}}>SUBTOTAL</div>
         <div style={{position:'absolute', right:P, top:284, fontSize:12, fontWeight:400, color:'#6b7280', textAlign:'right'}}>1646 €</div>
 
-        <div style={{position:'absolute', right:P+178, top:305, fontSize:10, fontWeight:500, color:'#9ca3af'}}>IVA (21%)</div>
+        <div style={{position:'absolute', left:455, top:305, fontSize:10, fontWeight:500, color:'#9ca3af'}}>IVA (21%)</div>
         <div style={{position:'absolute', right:P, top:305, fontSize:12, fontWeight:400, color:'#6b7280', textAlign:'right'}}>345,66 €</div>
 
-        <div style={{position:'absolute', right:P, top:323, width:178, height:1, background:'#e5e7eb'}} />
+        <div style={{position:'absolute', left:455, top:323, width:W-455-P, height:1, background:'#e5e7eb'}} />
 
-        <div style={{position:'absolute', right:P+178, top:335, fontSize:12, fontWeight:700, color:'#111827'}}>TOTAL</div>
+        <div style={{position:'absolute', left:455, top:335, fontSize:12, fontWeight:700, color:'#111827'}}>TOTAL</div>
         <div style={{position:'absolute', right:P, top:334, fontSize:13, fontWeight:700, color:'#111827', textAlign:'right'}}>1991,66 €</div>
       </div>
     </div>
