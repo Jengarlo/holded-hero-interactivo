@@ -265,21 +265,21 @@ function InvoiceCard({ accent }) {
                 }}>
                 {isNew
                   ? <input value={line.name} onChange={e=>updateLine(line.id,'name',e.target.value)}
-                      style={inpStyle({left:P, top:9, width:290, fontSize:13, fontWeight:600, color:'#1f2937'})} />
+                      style={inpStyle({left:P, top:19, width:290, fontSize:13, fontWeight:600, color:'#1f2937'})} />
                   : <div style={{position:'absolute', left:P, top:10, fontSize:13, fontWeight:600, color:'#1f2937', lineHeight:'13px'}}>{line.name}</div>
                 }
-                <div style={{position:'absolute', left:P, top:28, fontSize:11, fontWeight:400, color:'#9ca3af', lineHeight:'13px'}}>{line.desc}</div>
+                {!isNew && <div style={{position:'absolute', left:P, top:28, fontSize:11, fontWeight:400, color:'#9ca3af', lineHeight:'13px'}}>{line.desc}</div>}
                 {isNew
                   ? <input type="number" min="0" value={line.qty} onChange={e=>updateLine(line.id,'qty',e.target.value)}
-                      style={inpStyle({left:375, top:14, width:50, fontSize:13, fontWeight:400, color:accent})} />
+                      style={inpStyle({left:375, top:19, width:50, fontSize:13, fontWeight:400, color:accent})} />
                   : <div style={{position:'absolute', left:375, top:15, fontSize:13, fontWeight:400, color:'#374151'}}>{line.qty}</div>
                 }
                 {isNew
                   ? <input type="number" min="0" value={line.price||''} placeholder="0" onChange={e=>updateLine(line.id,'price',e.target.value)}
-                      style={inpStyle({left:455, top:14, width:90, fontSize:13, fontWeight:400, color:accent})} />
+                      style={inpStyle({left:455, top:19, width:90, fontSize:13, fontWeight:400, color:accent})} />
                   : <div style={{position:'absolute', left:455, top:15, fontSize:13, fontWeight:400, color:'#374151'}}>{line.price > 0 ? fmt(line.price) : '—'}</div>
                 }
-                <div style={{position:'absolute', right:P, top:15, fontSize:13, fontWeight:600,
+                <div style={{position:'absolute', right:P, top: isNew ? 19 : 15, fontSize:13, fontWeight:600,
                   color: isNew ? accent : '#1f2937', textAlign:'right'}}>
                   {line.qty*line.price > 0 ? fmt(line.qty*line.price) : '—'}
                 </div>
