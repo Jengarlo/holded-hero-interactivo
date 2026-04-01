@@ -50,6 +50,11 @@
     @media (max-width: 500px)  { .mockup-scale { transform: scale(0.31); } }
     @media (max-width: 400px)  { .mockup-scale { transform: scale(0.25); } }
     .msg-input:focus { border-color: #1963ef !important; outline: none; }
+    .verifactu-badge { transition: filter .3s ease, transform .3s ease; cursor: pointer; }
+    .verifactu-badge:hover {
+      filter: drop-shadow(0 0 10px rgba(0,210,230,.75)) drop-shadow(0 0 28px rgba(0,180,210,.45));
+      transform: scale(1.07);
+    }
   </style>
 </head>
 <body>
@@ -120,7 +125,7 @@ function QRImg({ url, size }) {
 function Sidebar() {
   return (
     <div style={{
-      width:62, flexShrink:0, height:600,
+      width:62, flexShrink:0, minHeight:600,
       background:'#1f2937',
       borderRight:'0.9px solid #4b5563',
       display:'flex', flexDirection:'column',
@@ -200,11 +205,11 @@ function InvoiceCard({ accent, onTotalChange }) {
 
   return (
     <div style={{
-      position:'absolute', left:49, top:20,
-      width:W, height:576,
+      margin:'20px 63px 20px 49px',
+      width:W, minHeight:640,
       background:'white', border:'1px solid #e5e7eb',
       borderRadius:4, boxShadow:'0px 2px 6px 0px rgba(0,0,0,0.07)',
-      display:'flex', flexDirection:'column', overflow:'hidden',
+      display:'flex', flexDirection:'column',
     }}>
 
       {/* ── HEADER — padding P=30 en los 4 lados ── */}
@@ -249,7 +254,7 @@ function InvoiceCard({ accent, onTotalChange }) {
       </div>
 
       {/* ── LÍNEAS (scrollable) ── */}
-      <div style={{flexGrow:1, flexShrink:1, flexBasis:0, minHeight:0, overflowY:'auto'}}>
+      <div style={{flexShrink:0}}>
         {lines.map((line) => {
           const isNew = line.id > 2;
           const inpStyle = (extra) => ({
@@ -363,7 +368,7 @@ function RightPanel({ accent, onAccentChange, invoiceTotal }) {
 
   return (
     <div style={{
-      width:377, flexShrink:0, height:600,
+      width:377, flexShrink:0, minHeight:600, alignSelf:'flex-start', position:'sticky', top:0,
       background:'white', borderLeft:'1px solid #d1d5db',
       display:'flex', flexDirection:'column',
     }}>
@@ -617,6 +622,7 @@ function App() {
       <div className="mockup-scale" style={{position:'relative'}}>
         {/* Verifactu badge */}
         <img src={A.verifactu} alt="Verifactu Software Certificado"
+          className="verifactu-badge"
           style={{
             position:'absolute', top:-59, right:-54,
             width:112, height:112, zIndex:10, display:'block',
@@ -625,19 +631,18 @@ function App() {
         {/* ─── LA CARD ─── */}
         <div style={{
           display:'flex',
-          width:1215, height:600,
+          width:1215, minHeight:600,
           background:'white',
           border:'1px solid rgba(255,255,255,0.08)',
           borderRadius:'16px 16px 0 0',
           boxShadow:'0px 25px 50px -12px rgba(0,0,0,0.5)',
-          overflow:'hidden',
         }}>
           <Sidebar />
 
           {/* Área principal — fondo gris con invoice card dentro */}
           <div style={{
             width:776, background:'#f9fafb',
-            position:'relative', flexShrink:0, overflow:'hidden',
+            flexShrink:0,
           }}>
             <InvoiceCard accent={accent} onTotalChange={setInvoiceTotal} />
           </div>
