@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Holded — Hero</title>
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body, #root { height: 100%; }
+    body { font-family: 'Inter', sans-serif; background: #0a0a0a; }
+    button { font-family: 'Inter', sans-serif; cursor: pointer; }
+    input  { font-family: 'Inter', sans-serif; }
+
+    /* scrollbar inside panels */
+    .scroll::-webkit-scrollbar { width: 4px; }
+    .scroll::-webkit-scrollbar-track { background: transparent; }
+    .scroll::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 4px; }
+
+    /* tab underline animation */
+    .tab-item { position: relative; transition: color .15s; }
+    .tab-item::after {
+      content: ''; position: absolute; bottom: -1px; left: 0; right: 0;
+      height: 2px; border-radius: 2px 2px 0 0;
+      background: transparent; transition: background .15s;
+    }
+    .tab-item.active { color: #111827 !important; font-weight: 600; }
+    .tab-item.active::after { background: #111827; }
+
+    .swatch {
+      width: 14px; height: 14px; border-radius: 50%; border: none;
+      cursor: pointer; transition: transform .15s, outline-offset .1s;
+      flex-shrink: 0;
+    }
+    .swatch:hover { transform: scale(1.25); }
+    .swatch.sel { outline: 1.5px solid currentColor; outline-offset: 2px; }
+
+    .btn-enviar {
+      width: 100%; padding: 9px 0;
+      border: none; border-radius: 6px;
+      font-size: 11px; font-weight: 600; color: white;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      transition: opacity .15s, transform .1s;
+    }
+    .btn-enviar:active { transform: scale(.98); }
+    .btn-enviar:hover  { opacity: .88; }
+
+    .row-meta { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; }
+    .row-meta .lbl { font-size: 10px; color: #9ca3af; }
+    .row-meta .val { font-size: 10px; font-weight: 600; color: #374151; }
+
+    .nav-item {
+      width: 28px; height: 28px; border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      border: none; background: transparent; cursor: pointer;
+      transition: background .12s;
+    }
+    .nav-item:hover { background: rgba(255,255,255,.07); }
+    .nav-item.active { background: rgba(229,231,235,.18); }
+
+    .invoice-tr td { padding: 7px 0; font-size: 10px; border-bottom: 1px solid #f9fafb; }
+    .invoice-tr:hover td { background: #fafafa; }
+
+    .status-chip {
+      display: inline-flex; align-items: center;
+      padding: 3px 9px; border-radius: 4px;
+      font-size: 10px; font-weight: 600;
+      background: #f3f4f6; color: #374151;
+    }
+    .aprobar-link {
+      font-size: 10px; font-weight: 600; color: #1963ef;
+      background: none; border: none; cursor: pointer;
+      text-decoration: none; padding: 0;
+      transition: color .12s;
+    }
+    .aprobar-link:hover { color: #1448c8; }
+
+    .cat-row {
+      display: flex; justify-content: space-between; align-items: center;
+      background: #f9fafb; border-radius: 6px; padding: 7px 10px;
+      font-size: 10px; cursor: pointer;
+      border: 1px solid transparent; transition: border-color .15s;
+    }
+    .cat-row:hover { border-color: #e5e7eb; }
+
+    .msg-input {
+      width: 100%; border: 1px solid #e5e7eb; border-radius: 6px;
+      padding: 7px 10px; font-size: 10px; color: #374151; outline: none;
+      transition: border-color .15s; resize: none;
+    }
+    .msg-input:focus { border-color: #1963ef; }
+
+    .hist-dot {
+      width: 18px; height: 18px; border-radius: 50%;
+      background: #eff6ff; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    /* Subtle glow behind the card */
+    .glow {
+      position: absolute;
+      width: 900px; height: 400px;
+      background: radial-gradient(ellipse, rgba(121,82,252,.12) 0%, transparent 70%);
+      top: 50%; left: 50%; transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState, useRef } = React;
+
+/* ─── Figma asset URLs ─────────────────────────────────── */
+const A = {
+  vector:   "https://www.figma.com/api/mcp/asset/1ceacc24-52f4-4f08-9383-876e925dadfa",
+  vector1:  "https://www.figma.com/api/mcp/asset/1638f1e9-2b06-4853-98ec-3f5a9fc7026e",
+  nav: [
+    "https://www.figma.com/api/mcp/asset/f04d6f4a-1fa5-4c5f-bdc2-e55ba3e89fdd",
+    "https://www.figma.com/api/mcp/asset/fa47dbed-b62b-4c0f-829c-6cfcc6d0a3eb",
+    "https://www.figma.com/api/mcp/asset/32f8845f-49f4-4f88-81cd-b03737707b8c",
+    "https://www.figma.com/api/mcp/asset/01d05c9e-aedb-4fb8-ace4-a90eda0e6ee3",
+    "https://www.figma.com/api/mcp/asset/3a04d3a7-ac70-4a1f-a652-14088e8fa034",
+    "https://www.figma.com/api/mcp/asset/7bc26d6b-e25e-454a-a7ff-c65520efce49",
+    "https://www.figma.com/api/mcp/asset/fbca17dc-056d-406f-852a-15b235009354",
+    "https://www.figma.com/api/mcp/asset/361d4b6b-73dc-4083-bbe8-9ba7d2f3cef9",
+    "https://www.figma.com/api/mcp/asset/6967a771-37ea-4b85-9747-ed9cb21a9c74",
+    "https://www.figma.com/api/mcp/asset/cd872fad-a719-4e89-aa4f-7005985cbea0",
+    "https://www.figma.com/api/mcp/asset/5266fae9-440d-4839-a7f9-886c5bb3ef4f",
+  ],
+  dot:          "https://www.figma.com/api/mcp/asset/724cbe14-c2b1-4cce-b447-90995947087c",
+  check:        "https://www.figma.com/api/mcp/asset/712f4e70-9acd-4f6d-b7ce-d8a4fcd2b962",
+  verifactu:    "https://www.figma.com/api/mcp/asset/92317a70-5310-479b-9b0c-c7270b87d003",
+  qr:           "https://www.figma.com/api/mcp/asset/26b09612-2da6-490f-be36-d820f8fb9199",
+  diamond:      "https://www.figma.com/api/mcp/asset/319a4bb3-6d9a-4608-9568-f2205130c9a1",
+  group:        "https://www.figma.com/api/mcp/asset/b3a6ebdf-0c63-4206-92f4-04dad806f49e",
+  star:         "https://www.figma.com/api/mcp/asset/5e1535ba-213c-4e52-86ba-2f70d10a5c6b",
+  ellipse:      "https://www.figma.com/api/mcp/asset/5463f4bc-ee37-4d8e-a7e2-fce47fcd2d45",
+  brandDot:     "https://www.figma.com/api/mcp/asset/1836147e-ce9c-444e-83f5-e6580132229c",
+};
+
+/* ─── Figma swatches (exact) ───────────────────────────── */
+const SWATCHES = ['#7C5CFC','#0891B2','#16A34A','#EA580C','#1E293B'];
+
+/* ─── Sidebar ──────────────────────────────────────────── */
+function Sidebar() {
+  const [active, setActive] = useState(0);
+  return (
+    <div style={{
+      width: 62, flexShrink: 0, height: 600,
+      background: '#1f2937',
+      borderRight: '0.9px solid #4b5563',
+      display: 'flex', flexDirection: 'column',
+      alignItems: 'center', paddingTop: 20,
+      position: 'relative', gap: 0,
+    }}>
+      {/* Holded logo mark */}
+      <div style={{width: 32, height: 28, position: 'relative', marginBottom: 12, flexShrink: 0}}>
+        <img src={A.vector}  alt="" style={{position:'absolute', width: 13.6, height: 11.1, left: 12.2, top: 6,   display:'block'}} />
+        <img src={A.vector1} alt="" style={{position:'absolute', width: 13.1, height: 15.1, left: 7,    top: 7.6, display:'block'}} />
+      </div>
+
+      {/* Nav */}
+      <div style={{display:'flex', flexDirection:'column', gap: 6, alignItems:'center'}}>
+        {A.nav.map((src, i) => (
+          <button key={i} onClick={() => setActive(i)}
+            className={`nav-item ${active === i ? 'active' : ''}`}>
+            <img src={src} alt="" style={{width: 13, height: 13, objectFit:'contain', display:'block',
+              filter: active === i ? 'brightness(10)' : 'brightness(3) saturate(0)' }} />
+          </button>
+        ))}
+      </div>
+
+      {/* Avatar */}
+      <div style={{
+        position:'absolute', bottom: 14, left: 16,
+        width: 32, height: 32, borderRadius: 16,
+        background: '#f3f0ff', overflow:'hidden',
+        display:'flex', alignItems:'center', justifyContent:'center',
+      }}>
+        <span style={{fontWeight:700, color:'#7c5cfc', fontSize:15}}>B</span>
+      </div>
+      <img src={A.dot} alt="" style={{position:'absolute', bottom:22, left:39, width:9, height:9, display:'block'}} />
+    </div>
+  );
+}
+
+/* ─── Invoice Card (inside main content area) ──────────── */
+function InvoiceCard() {
+  const [lines, setLines] = useState([
+    {id:1, desc:'Diseño web', qty:1, price:1100},
+    {id:2, desc:'Branding',   qty:1, price:546},
+  ]);
+  const [editing, setEditing] = useState(null);
+  const nextId = useRef(3);
+
+  const update = (id, field, val) =>
+    setLines(prev => prev.map(l => l.id === id ? {...l, [field]: field==='desc' ? val : (parseFloat(val)||0)} : l));
+
+  const subtotal = lines.reduce((s,l) => s + l.qty * l.price, 0);
+  const iva      = subtotal * 0.21;
+  const total    = subtotal + iva;
+
+  const fmt = n => n.toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2}) + ' €';
+
+  return (
+    <div style={{
+      position:'absolute', left:49, top:34,
+      width:664, height:576,
+      background:'white',
+      border:'1px solid #e5e7eb',
+      borderRadius:4,
+      boxShadow:'0px 2px 6px 0px rgba(0,0,0,0.07)',
+      display:'flex', flexDirection:'column',
+      overflow:'hidden',
+    }}>
+      {/* Header */}
+      <div style={{
+        padding:'20px 28px 14px',
+        borderBottom:'1px solid #f3f4f6',
+        display:'flex', justifyContent:'space-between', alignItems:'flex-start',
+        flexShrink: 0,
+      }}>
+        <div>
+          {/* Brand */}
+          <div style={{display:'flex', alignItems:'center', gap:6, marginBottom:6}}>
+            <div style={{
+              width:20, height:20, borderRadius:4,
+              background:'#7c5cfc', display:'flex', alignItems:'center', justifyContent:'center',
+            }}>
+              <span style={{color:'white', fontSize:10, fontWeight:800, lineHeight:1}}>H</span>
+            </div>
+            <span style={{fontSize:11, fontWeight:700, color:'#111827'}}>Holded</span>
+          </div>
+          <p style={{fontSize:9, color:'#6b7280', lineHeight:'16px'}}>Solar Tech S.A</p>
+          <p style={{fontSize:9, color:'#9ca3af', lineHeight:'16px'}}>NIF: B12345678 · Madrid</p>
+        </div>
+        <div style={{display:'flex', flexDirection:'column', alignItems:'flex-end', gap:8}}>
+          <div style={{textAlign:'right'}}>
+            <p style={{fontSize:18, fontWeight:700, color:'#111827', letterSpacing:'-0.02em'}}>Factura</p>
+            <p style={{fontSize:10, color:'#6b7280', marginTop:2}}>F260001</p>
+          </div>
+          <img src={A.qr} alt="" style={{width:44, height:44, display:'block'}} />
+        </div>
+      </div>
+
+      {/* Bill to + dates */}
+      <div style={{
+        padding:'14px 28px',
+        borderBottom:'1px solid #f3f4f6',
+        display:'flex', justifyContent:'space-between',
+        flexShrink:0,
+      }}>
+        <div>
+          <p style={{fontSize:8, color:'#9ca3af', textTransform:'uppercase', letterSpacing:'0.06em', marginBottom:4, fontWeight:500}}>Facturar a</p>
+          <p style={{fontSize:11, fontWeight:700, color:'#111827'}}>Proyecto Volta S.L.</p>
+          <p style={{fontSize:9, color:'#6b7280', marginTop:2}}>NIF: A87654321</p>
+        </div>
+        <div style={{textAlign:'right', fontSize:9}}>
+          <p style={{color:'#9ca3af', marginBottom:2}}>Fecha emisión</p>
+          <p style={{color:'#374151', fontWeight:600, marginBottom:8}}>29/03/2026</p>
+          <p style={{color:'#9ca3af', marginBottom:2}}>Vencimiento</p>
+          <p style={{color:'#374151', fontWeight:600}}>30/04/2026</p>
+        </div>
+      </div>
+
+      {/* Line items */}
+      <div style={{padding:'12px 28px 0', flex:1, overflowY:'auto'}} className="scroll">
+        <table style={{width:'100%', borderCollapse:'collapse'}}>
+          <thead>
+            <tr>
+              {['Descripción','Cant.','Precio','Total'].map((h,i) => (
+                <th key={h} style={{
+                  fontSize:9, color:'#9ca3af', fontWeight:500,
+                  textAlign: i===0 ? 'left' : 'right',
+                  paddingBottom:8, borderBottom:'1px solid #f3f4f6',
+                  width: i===0 ? 'auto' : i===1 ? 50 : 90,
+                }}>{h}</th>
+              ))}
+              <th style={{width:18}}></th>
+            </tr>
+          </thead>
+          <tbody>
+            {lines.map(l => (
+              <tr key={l.id} className="invoice-tr">
+                <td>
+                  {editing===`${l.id}-d`
+                    ? <input autoFocus value={l.desc}
+                        onChange={e=>update(l.id,'desc',e.target.value)}
+                        onBlur={()=>setEditing(null)}
+                        style={{border:'1px solid #93c5fd', borderRadius:4, padding:'2px 6px', fontSize:10, color:'#374151', outline:'none', width:'100%'}} />
+                    : <span onClick={()=>setEditing(`${l.id}-d`)} style={{color:'#374151', cursor:'text'}}>{l.desc}</span>
+                  }
+                </td>
+                <td style={{textAlign:'right'}}>
+                  {editing===`${l.id}-q`
+                    ? <input autoFocus value={l.qty} onChange={e=>update(l.id,'qty',e.target.value)} onBlur={()=>setEditing(null)}
+                        style={{border:'1px solid #93c5fd', borderRadius:4, padding:'2px 4px', fontSize:10, width:36, textAlign:'right', outline:'none'}} />
+                    : <span onClick={()=>setEditing(`${l.id}-q`)} style={{color:'#6b7280', cursor:'text'}}>{l.qty}</span>
+                  }
+                </td>
+                <td style={{textAlign:'right'}}>
+                  {editing===`${l.id}-p`
+                    ? <input autoFocus value={l.price} onChange={e=>update(l.id,'price',e.target.value)} onBlur={()=>setEditing(null)}
+                        style={{border:'1px solid #93c5fd', borderRadius:4, padding:'2px 4px', fontSize:10, width:72, textAlign:'right', outline:'none'}} />
+                    : <span onClick={()=>setEditing(`${l.id}-p`)} style={{color:'#6b7280', cursor:'text'}}>{fmt(l.price)}</span>
+                  }
+                </td>
+                <td style={{textAlign:'right', fontWeight:600, color:'#111827'}}>{fmt(l.qty*l.price)}</td>
+                <td>
+                  <button onClick={()=>setLines(p=>p.filter(x=>x.id!==l.id))}
+                    style={{background:'none', border:'none', color:'#d1d5db', fontSize:11, padding:'0 2px', lineHeight:1, cursor:'pointer', opacity:0}}
+                    className="del-btn"
+                    onMouseEnter={e=>e.currentTarget.style.opacity=1}
+                    onMouseLeave={e=>e.currentTarget.style.opacity=0}
+                  >×</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <button onClick={()=>{const id=nextId.current++;setLines(p=>[...p,{id,desc:'Nuevo concepto',qty:1,price:0}]);}}
+          style={{fontSize:10, color:'#1963ef', background:'none', border:'none', padding:'8px 0', cursor:'pointer', display:'flex', alignItems:'center', gap:4}}>
+          + Añadir línea
+        </button>
+      </div>
+
+      {/* Totals */}
+      <div style={{padding:'10px 28px 16px', borderTop:'1px solid #f3f4f6', flexShrink:0}}>
+        <div style={{display:'flex', justifyContent:'flex-end'}}>
+          <div style={{width:200}}>
+            {[['Subtotal', fmt(subtotal)], ['IVA 21%', fmt(iva)]].map(([k,v]) => (
+              <div key={k} style={{display:'flex', justifyContent:'space-between', fontSize:10, color:'#6b7280', marginBottom:4}}>
+                <span>{k}</span><span>{v}</span>
+              </div>
+            ))}
+            <div style={{display:'flex', justifyContent:'space-between', fontSize:13, fontWeight:700, color:'#111827', borderTop:'1px solid #e5e7eb', paddingTop:8, marginTop:4}}>
+              <span>Total</span><span>{fmt(total)}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─── Right Panel ──────────────────────────────────────── */
+function RightPanel() {
+  const [tab,      setTab]      = useState('general');
+  const [approved, setApproved] = useState(false);
+  const [accent,   setAccent]   = useState('#7C5CFC');
+  const [msgs,     setMsgs]     = useState([
+    {initials:'MG', color:'#0891b2', name:'M. García', time:'31/03/2026 · 10:45',
+     text:'Factura revisada y aprobada. Todo correcto.'},
+  ]);
+  const [input, setInput] = useState('');
+
+  const sendMsg = () => {
+    if (!input.trim()) return;
+    setMsgs(p=>[...p,{initials:'B',color:'#7c5cfc',name:'Tú',time:'ahora',text:input.trim()}]);
+    setInput('');
+  };
+
+  return (
+    <div style={{
+      width:377, flexShrink:0, height:600,
+      background:'white', borderLeft:'1px solid #d1d5db',
+      display:'flex', flexDirection:'column',
+    }}>
+      {/* Tabs */}
+      <div style={{display:'flex', borderBottom:'1px solid #e5e7eb', flexShrink:0}}>
+        {[['general','General'],['mensajes','Mensajes'],['historial','Historial']].map(([id,lbl])=>(
+          <button key={id} onClick={()=>setTab(id)}
+            className={`tab-item ${tab===id?'active':''}`}
+            style={{
+              flex:1, padding:'11px 0', fontSize:11,
+              color: tab===id ? '#111827' : '#9ca3af',
+              background:'none', border:'none',
+              fontWeight: tab===id ? 600 : 500,
+              cursor:'pointer',
+            }}>
+            {lbl}
+          </button>
+        ))}
+      </div>
+
+      {/* Body */}
+      <div className="scroll" style={{flex:1, overflowY:'auto', padding:'16px 20px', display:'flex', flexDirection:'column', gap:14}}>
+
+        {/* ── GENERAL ── */}
+        {tab==='general' && <>
+          {/* Total highlight */}
+          <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', paddingBottom:12, borderBottom:'1px solid #f3f4f6'}}>
+            <span style={{fontSize:10, color:'#9ca3af', fontWeight:500}}>Total</span>
+            <span style={{fontSize:18, fontWeight:700, color:'#111827', letterSpacing:'-0.02em'}}>1.991,66 €</span>
+          </div>
+
+          {/* Meta */}
+          <div style={{display:'flex', flexDirection:'column'}}>
+            {[['Num. doc.','F260001'],['Cliente','Proyecto Volta S.L.'],['Fecha','29/03/2026']].map(([k,v])=>(
+              <div key={k} className="row-meta" style={{borderBottom:'1px solid #f9fafb'}}>
+                <span className="lbl">{k}</span>
+                <span className="val">{v}</span>
+              </div>
+            ))}
+          </div>
+
+          {/* Green advisor badge */}
+          <div style={{
+            background:'#ecfdf5', borderRadius:8, padding:'10px 12px',
+            display:'flex', alignItems:'flex-start', gap:8,
+          }}>
+            <img src={A.check} alt="" style={{width:16, height:16, flexShrink:0, marginTop:1, display:'block'}} />
+            <div>
+              <p style={{fontSize:11, fontWeight:600, color:'#166534', lineHeight:'16px'}}>Revisada por tu asesor</p>
+              <p style={{fontSize:9, color:'#1b8751', marginTop:2}}>M. García · 31/03/2026</p>
+            </div>
+          </div>
+
+          {/* Estado */}
+          <div>
+            <p style={{fontSize:8, color:'#9ca3af', textTransform:'uppercase', letterSpacing:'0.06em', fontWeight:500, marginBottom:8}}>Estado</p>
+            <div style={{display:'flex', alignItems:'center', gap:10}}>
+              <span className="status-chip">{approved ? 'Aprobada ✓' : 'Borrador'}</span>
+              {!approved && (
+                <button className="aprobar-link" onClick={()=>setApproved(true)}>
+                  Aprobar
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Categorización */}
+          <div>
+            <p style={{fontSize:8, color:'#9ca3af', textTransform:'uppercase', letterSpacing:'0.06em', fontWeight:500, marginBottom:8}}>Categorización</p>
+            <div className="cat-row">
+              <span style={{color:'#9ca3af', fontWeight:500}}>Cuenta contable</span>
+              <span style={{color:'#374151', fontWeight:600}}>Prestación de servicios</span>
+            </div>
+          </div>
+
+          {/* Swatches */}
+          <div>
+            <p style={{fontSize:8, color:'#9ca3af', textTransform:'uppercase', letterSpacing:'0.06em', fontWeight:500, marginBottom:8}}>Tema color</p>
+            <div style={{display:'flex', alignItems:'center', gap:8}}>
+              {SWATCHES.map(c=>(
+                <button key={c} onClick={()=>setAccent(c)}
+                  className={`swatch ${accent===c?'sel':''}`}
+                  style={{background:c, color:c}} />
+              ))}
+              <button style={{
+                fontSize:9, color:'#9ca3af', fontWeight:500,
+                background:'none', border:'1px solid #e5e7eb',
+                borderRadius:4, padding:'2px 6px', cursor:'pointer',
+              }}>+100</button>
+            </div>
+          </div>
+        </>}
+
+        {/* ── MENSAJES ── */}
+        {tab==='mensajes' && <>
+          {msgs.map((m,i)=>(
+            <div key={i} style={{display:'flex', gap:8, alignItems:'flex-start'}}>
+              <div style={{
+                width:26, height:26, borderRadius:13,
+                background:m.color, flexShrink:0,
+                display:'flex', alignItems:'center', justifyContent:'center',
+              }}>
+                <span style={{fontSize:9, fontWeight:700, color:'white'}}>{m.initials}</span>
+              </div>
+              <div style={{background:'#f9fafb', borderRadius:8, padding:'8px 10px', flex:1}}>
+                <div style={{display:'flex', justifyContent:'space-between', marginBottom:3}}>
+                  <span style={{fontSize:10, fontWeight:600, color:'#374151'}}>{m.name}</span>
+                  <span style={{fontSize:9, color:'#9ca3af'}}>{m.time}</span>
+                </div>
+                <p style={{fontSize:10, color:'#6b7280', lineHeight:'15px'}}>{m.text}</p>
+              </div>
+            </div>
+          ))}
+          <div style={{display:'flex', gap:6, marginTop:4}}>
+            <textarea
+              value={input}
+              onChange={e=>setInput(e.target.value)}
+              onKeyDown={e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();}}}
+              placeholder="Escribe un mensaje…"
+              rows={2}
+              className="msg-input"
+            />
+            <button onClick={sendMsg} style={{
+              width:32, height:32, borderRadius:6, alignSelf:'flex-end',
+              background:accent, border:'none', color:'white', fontSize:12, cursor:'pointer', flexShrink:0,
+            }}>›</button>
+          </div>
+        </>}
+
+        {/* ── HISTORIAL ── */}
+        {tab==='historial' && (()=>{
+          const items = [
+            {action:'Factura creada',              user:'B. González', time:'29/03/2026 · 09:12'},
+            {action:'Estado cambiado a Revisada',  user:'M. García',   time:'31/03/2026 · 10:44'},
+            {action:'Enviada por email',            user:'B. González', time:'31/03/2026 · 11:01'},
+          ];
+          return items.map((item,i)=>(
+            <div key={i} style={{display:'flex', gap:10, alignItems:'flex-start'}}>
+              <div style={{display:'flex', flexDirection:'column', alignItems:'center', alignSelf:'stretch', flexShrink:0}}>
+                <div className="hist-dot">
+                  <svg width="6" height="6" viewBox="0 0 6 6">
+                    <circle cx="3" cy="3" r="3" fill="#1963ef"/>
+                  </svg>
+                </div>
+                {i < items.length-1 && <div style={{width:1, flex:1, background:'#e5e7eb', marginTop:3}}/>}
+              </div>
+              <div style={{paddingBottom: i < items.length-1 ? 10 : 0}}>
+                <p style={{fontSize:10, fontWeight:600, color:'#374151', lineHeight:'16px'}}>{item.action}</p>
+                <p style={{fontSize:9, color:'#9ca3af', marginTop:2}}>{item.user} · {item.time}</p>
+              </div>
+            </div>
+          ));
+        })()}
+      </div>
+
+      {/* Enviar */}
+      <div style={{padding:'12px 20px', borderTop:'1px solid #f3f4f6', flexShrink:0}}>
+        <button className="btn-enviar" style={{background: accent}}>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+          </svg>
+          Enviar
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/* ─── Root ─────────────────────────────────────────────── */
+function App() {
+  return (
+    <div style={{
+      minHeight:'100vh', background:'#0a0a0a',
+      display:'flex', alignItems:'center', justifyContent:'center',
+      padding:'60px 40px', position:'relative', overflow:'auto',
+    }}>
+      <div className="glow" />
+
+      {/* Verifactu badge — top right of card */}
+      <div style={{position:'relative'}}>
+        <img
+          src={A.verifactu} alt="Verifactu Software Certificado"
+          style={{
+            position:'absolute', top:-16, right:-12,
+            width:100, height:100, zIndex:10, display:'block',
+          }}
+        />
+
+        {/* ─── THE CARD ─────────────────────────────────── */}
+        <div style={{
+          display:'flex',
+          width:1215, height:600,
+          background:'white',
+          border:'1px solid rgba(255,255,255,0.08)',
+          borderRadius:'16px 16px 0 0',
+          boxShadow:'0px 25px 50px -12px rgba(0,0,0,0.5)',
+          overflow:'hidden',
+          position:'relative',
+        }}>
+          <Sidebar />
+
+          {/* Main content — gray bg + invoice card inside */}
+          <div style={{
+            width:776, background:'#f9fafb',
+            position:'relative', flexShrink:0, overflow:'hidden',
+          }}>
+            <InvoiceCard />
+          </div>
+
+          <RightPanel />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
