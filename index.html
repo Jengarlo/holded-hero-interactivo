@@ -203,7 +203,7 @@ function InvoiceCard({ accent }) {
           fontSize:10, fontWeight:500, color:'#9ca3af', lineHeight:'12px',
         }}>Passeig de Gràcia, 78 · 08008 Barcelona</div>
         {/* QR escaneable + redondeado, sin borde ni shadow */}
-        <div style={{position:'absolute', right:P, top:13}}>
+        <div style={{position:'absolute', left:W-P-80, top:13, width:80, height:80, overflow:'hidden'}}>
           <QRImg url="https://www.holded.com/es/programa-facturacion-verifactu" size={80} />
         </div>
       </div>
