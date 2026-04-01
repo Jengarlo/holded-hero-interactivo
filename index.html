@@ -167,10 +167,15 @@ function Sidebar() {
   );
 }
 
+const fmt = n => {
+  const s = n.toFixed(2);
+  return (s.endsWith('.00') ? String(Math.round(n)) : s.replace('.',',')) + ' €';
+};
+
 /* ─────────────────────────────────────────────────────────
    INVOICE CARD  (664 × 576) — flex layout, líneas dinámicas
 ───────────────────────────────────────────────────────── */
-function InvoiceCard({ accent }) {
+function InvoiceCard({ accent, onTotalChange }) {
   const P = 30, W = 664;
 
   const [lines, setLines] = React.useState([
@@ -189,10 +194,7 @@ function InvoiceCard({ accent }) {
   const iva      = subtotal * 0.21;
   const total    = subtotal + iva;
 
-  const fmt = n => {
-    const s = n.toFixed(2);
-    return (s.endsWith('.00') ? String(Math.round(n)) : s.replace('.',',')) + ' €';
-  };
+  React.useEffect(() => { onTotalChange && onTotalChange(total); }, [total]);
 
   const D = () => <div style={{height:1, background:'#f3f4f6', marginLeft:P, marginRight:P}} />;
 
@@ -333,7 +335,7 @@ function InvoiceCard({ accent }) {
    RIGHT PANEL  (377 × 600)
    padding: 34px top/bottom, 30px left/right | gap: 18px
 ───────────────────────────────────────────────────────── */
-function RightPanel({ accent, onAccentChange }) {
+function RightPanel({ accent, onAccentChange, invoiceTotal }) {
   const [tab,      setTab]      = useState('general');
   const [approved, setApproved] = useState(false);
   const [msgs,     setMsgs]     = useState([
@@ -403,7 +405,7 @@ function RightPanel({ accent, onAccentChange }) {
           {/* Filas de metadatos */}
           <div style={{display:'flex', flexDirection:'column', gap:10}}>
             {[
-              ['Total',            '1991,66 €'],
+              ['Total',            fmt(invoiceTotal)],
               ['Num de documento', 'F260001'  ],
               ['Cliente',          'Proyecto Volta S.L.'],
               ['Fecha',            '29/03/2026'],
@@ -596,6 +598,7 @@ function RightPanel({ accent, onAccentChange }) {
 ───────────────────────────────────────────────────────── */
 function App() {
   const [accent, setAccent] = useState('#7C5CFC');
+  const [invoiceTotal, setInvoiceTotal] = useState(1991.66);
   return (
     <div style={{
       minHeight:'100vh', background:'#0a0a0a',
@@ -636,10 +639,10 @@ function App() {
             width:776, background:'#f9fafb',
             position:'relative', flexShrink:0, overflow:'hidden',
           }}>
-            <InvoiceCard accent={accent} />
+            <InvoiceCard accent={accent} onTotalChange={setInvoiceTotal} />
           </div>
 
-          <RightPanel accent={accent} onAccentChange={setAccent} />
+          <RightPanel accent={accent} onAccentChange={setAccent} invoiceTotal={invoiceTotal} />
         </div>
       </div>
     </div>
