@@ -247,7 +247,7 @@ function InvoiceCard({ accent }) {
       </div>
 
       {/* ── LÍNEAS (scrollable) ── */}
-      <div style={{flexGrow:1, flexShrink:1, flexBasis:0, overflowY:'auto'}}>
+      <div style={{flexGrow:1, flexShrink:1, flexBasis:0, minHeight:0, overflowY:'auto'}}>
         {lines.map((line) => {
           const isNew = line.id > 2;
           const inpStyle = (extra) => ({
