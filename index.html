@@ -87,8 +87,6 @@ const NAV = [
    SIDEBAR  (62 × 600, #1f2937)
 ───────────────────────────────────────────────────────── */
 function Sidebar() {
-  const [active, setActive] = useState(1); // Ventas activo por defecto
-
   return (
     <div style={{
       width:62, flexShrink:0, height:600,
@@ -105,24 +103,24 @@ function Sidebar() {
       {/* Separator */}
       <div style={{width:'100%', height:'0.9px', background:'#374151', marginBottom:10}} />
 
-      {/* Nav */}
+      {/* Nav — hover only, no click */}
       <div style={{
         display:'flex', flexDirection:'column',
         gap:10, padding:'0 15px', flex:1, alignItems:'stretch',
       }}>
         {NAV.map((n,i) => (
-          <button key={i} onClick={() => setActive(i)} title={n.label}
+          <div key={i} title={n.label}
             className="nav-btn"
             style={{
               display:'flex', alignItems:'center', justifyContent:'center',
               width:'100%', height:28, padding:'7.64px',
-              borderRadius:2,
-              background: active===i ? '#374151' : 'transparent',
-              color:       active===i ? '#f3f4f6' : '#9ca3af',
+              borderRadius:2, cursor:'default',
+              background: i===1 ? '#374151' : 'transparent',
+              color:       i===1 ? '#f3f4f6' : '#9ca3af',
               fontSize:13,
             }}>
             <span style={{fontFamily:'"Font Awesome 7 Pro"', fontWeight:400, fontSize:14, lineHeight:1, display:'block'}}>{n.u}</span>
-          </button>
+          </div>
         ))}
       </div>
 
