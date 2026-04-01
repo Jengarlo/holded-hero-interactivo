@@ -178,14 +178,14 @@ function InvoiceCard({ accent }) {
       overflow:'hidden',
     }}>
 
-      {/* ── HEADER  (height 90) ── */}
+      {/* ── HEADER  (height 106) ── */}
       <div style={{
-        position:'absolute', left:0, top:0, width:W, height:90,
+        position:'absolute', left:0, top:0, width:W, height:106,
         background:'white', borderBottom:'1px solid #f3f4f6',
       }}>
         {/* Logo box */}
         <div style={{
-          position:'absolute', left:P, top:23,
+          position:'absolute', left:P, top:31,
           width:44, height:44,
           background:accent, borderRadius:10,
           display:'flex', alignItems:'center', justifyContent:'center',
@@ -194,22 +194,22 @@ function InvoiceCard({ accent }) {
         </div>
         {/* Nombre empresa */}
         <div style={{
-          position:'absolute', left:P+54, top:27,
+          position:'absolute', left:P+54, top:35,
           fontSize:14, fontWeight:600, color:'#111827', lineHeight:'14px',
         }}>Solar Tech S.A</div>
         {/* Dirección */}
         <div style={{
-          position:'absolute', left:P+54, top:47,
+          position:'absolute', left:P+54, top:55,
           fontSize:10, fontWeight:500, color:'#9ca3af', lineHeight:'12px',
         }}>Passeig de Gràcia, 78 · 08008 Barcelona</div>
         {/* QR escaneable + redondeado, sin borde ni shadow */}
         <div style={{position:'absolute', right:P, top:13}}>
-          <QRImg url="https://www.holded.com/es/programa-facturacion-verifactu" size={64} />
+          <QRImg url="https://www.holded.com/es/programa-facturacion-verifactu" size={80} />
         </div>
       </div>
 
-      {/* ── BODY  (top 90) ── */}
-      <div style={{position:'absolute', left:0, top:90, width:W}}>
+      {/* ── BODY  (top 106) ── */}
+      <div style={{position:'absolute', left:0, top:106, width:W}}>
 
         {/* divider top */}
         <div style={{position:'absolute', left:P, top:0, width:inner, height:1, background:'#f3f4f6'}} />
