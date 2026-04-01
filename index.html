@@ -178,7 +178,10 @@ function InvoiceCard({ accent }) {
     { id:2, name:'Branding',    desc:'Logotipo, paleta de colores y guía de marca.', qty:1, price:546  },
   ]);
 
-  const addLine = () => setLines(l => [...l, { id:Date.now(), name:'Nuevo concepto', desc:'', qty:1, price:0 }]);
+  const addLine    = () => setLines(l => [...l, { id:Date.now(), name:'Nuevo concepto', desc:'', qty:1, price:0 }]);
+  const updateLine = (id, field, val) => setLines(l => l.map(ln =>
+    ln.id === id ? { ...ln, [field]: (field==='qty'||field==='price') ? (parseFloat(val)||0) : val } : ln
+  ));
 
   const subtotal = lines.reduce((s,l) => s + l.qty * l.price, 0);
   const iva      = subtotal * 0.21;
@@ -189,7 +192,7 @@ function InvoiceCard({ accent }) {
     return (s.endsWith('.00') ? String(Math.round(n)) : s.replace('.',',')) + ' €';
   };
 
-  const D = () => <div style={{height:1, background:'#f3f4f6', margin:`0 ${P}px`}} />;
+  const D = () => <div style={{height:1, background:'#f3f4f6', marginLeft:P, marginRight:P}} />;
 
   return (
     <div style={{
@@ -230,7 +233,7 @@ function InvoiceCard({ accent }) {
         <div style={{position:'absolute', left:P, top:50, fontSize:10, fontWeight:500, color:'#9ca3af'}}>08027 Barcelona</div>
         <div style={{position:'absolute', left:P, top:66, fontSize:10, fontWeight:500, color:'#9ca3af'}}>12345678A</div>
         <div style={{position:'absolute', right:P, top:16, fontSize:9, fontWeight:700, color:'#9ca3af', letterSpacing:'0.06em', textAlign:'right'}}>TOTAL</div>
-        <div style={{position:'absolute', right:P, top:30, fontSize:22, fontWeight:700, color:'#111827', textAlign:'right'}}>{fmt(total)}</div>
+        <div style={{position:'absolute', right:P, top:30, fontSize:22, fontWeight:700, color:accent, textAlign:'right'}}>{fmt(total)}</div>
       </div>
 
       {/* ── CABECERAS COLUMNAS (37px) ── */}
@@ -242,19 +245,45 @@ function InvoiceCard({ accent }) {
       </div>
 
       {/* ── LÍNEAS (scrollable) ── */}
-      <div style={{flex:1, overflowY:'auto', minHeight:0}}>
-        {lines.map((line, i) => (
-          <React.Fragment key={line.id}>
-            <div style={{position:'relative', height:52}}>
-              <div style={{position:'absolute', left:P,   top:10, fontSize:13, fontWeight:600, color:'#1f2937', lineHeight:'13px'}}>{line.name}</div>
-              <div style={{position:'absolute', left:P,   top:28, fontSize:11, fontWeight:400, color:'#9ca3af', lineHeight:'13px'}}>{line.desc}</div>
-              <div style={{position:'absolute', left:375, top:15, fontSize:13, fontWeight:400, color:'#374151'}}>{line.qty}</div>
-              <div style={{position:'absolute', left:455, top:15, fontSize:13, fontWeight:400, color:'#374151'}}>{line.price > 0 ? fmt(line.price) : '—'}</div>
-              <div style={{position:'absolute', right:P,  top:15, fontSize:13, fontWeight:600, color:'#1f2937', textAlign:'right'}}>{line.qty*line.price > 0 ? fmt(line.qty*line.price) : '—'}</div>
-            </div>
-            <D />
-          </React.Fragment>
-        ))}
+      <div style={{flexGrow:1, flexShrink:1, flexBasis:0, overflowY:'auto'}}>
+        {lines.map((line) => {
+          const isNew = line.id > 2;
+          const inpStyle = (extra) => ({
+            position:'absolute', background:'transparent', border:'none', outline:'none',
+            fontFamily:'inherit', ...extra,
+          });
+          return (
+            <React.Fragment key={line.id}>
+              <div style={{
+                position:'relative', height:52,
+                marginLeft:P, marginRight:P, borderRadius:4,
+                background: isNew ? hexRgba(accent, 0.10) : 'transparent',
+              }}>
+                {isNew
+                  ? <input value={line.name} onChange={e=>updateLine(line.id,'name',e.target.value)}
+                      style={inpStyle({left:0, top:9, width:290, fontSize:13, fontWeight:600, color:'#1f2937'})} />
+                  : <div style={{position:'absolute', left:0, top:10, fontSize:13, fontWeight:600, color:'#1f2937', lineHeight:'13px'}}>{line.name}</div>
+                }
+                <div style={{position:'absolute', left:0, top:28, fontSize:11, fontWeight:400, color:'#9ca3af', lineHeight:'13px'}}>{line.desc}</div>
+                {isNew
+                  ? <input type="number" min="0" value={line.qty} onChange={e=>updateLine(line.id,'qty',e.target.value)}
+                      style={inpStyle({left:345, top:14, width:50, fontSize:13, fontWeight:400, color:accent, textAlign:'center'})} />
+                  : <div style={{position:'absolute', left:345, top:15, fontSize:13, fontWeight:400, color:'#374151'}}>{line.qty}</div>
+                }
+                {isNew
+                  ? <input type="number" min="0" value={line.price||''} placeholder="0" onChange={e=>updateLine(line.id,'price',e.target.value)}
+                      style={inpStyle({left:425, top:14, width:90, fontSize:13, fontWeight:400, color:accent})} />
+                  : <div style={{position:'absolute', left:425, top:15, fontSize:13, fontWeight:400, color:'#374151'}}>{line.price > 0 ? fmt(line.price) : '—'}</div>
+                }
+                <div style={{position:'absolute', right:0, top:15, fontSize:13, fontWeight:600,
+                  color: isNew ? accent : '#1f2937', textAlign:'right'}}>
+                  {line.qty*line.price > 0 ? fmt(line.qty*line.price) : '—'}
+                </div>
+              </div>
+              <D />
+            </React.Fragment>
+          );
+        })}
         <button className="add-line-btn" onClick={addLine} style={{
           display:'flex', alignItems:'center', gap:6,
           color:accent, fontSize:11, fontWeight:500,
