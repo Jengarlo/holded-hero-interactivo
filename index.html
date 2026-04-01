@@ -221,8 +221,8 @@ function InvoiceCard({ accent }) {
         <div style={{position:'absolute', left:P, top:64, fontSize:10, fontWeight:500, color:'#9ca3af', lineHeight:'12px'}}>12345678A</div>
 
         {/* TOTAL top-right */}
-        <div style={{position:'absolute', left:540, top:16, fontSize:9, fontWeight:700, color:'#9ca3af', letterSpacing:'0.06em'}}>TOTAL</div>
-        <div style={{position:'absolute', left:540, top:30, fontSize:22, fontWeight:700, color:'#111827', lineHeight:'22px'}}>1991,66 €</div>
+        <div style={{position:'absolute', right:P, top:16, fontSize:9, fontWeight:700, color:'#9ca3af', letterSpacing:'0.06em', textAlign:'right'}}>TOTAL</div>
+        <div style={{position:'absolute', right:P, top:30, fontSize:22, fontWeight:700, color:'#111827', lineHeight:'22px', textAlign:'right'}}>1991,66 €</div>
 
         {/* divider */}
         <div style={{position:'absolute', left:P, top:88, width:inner, height:1, background:'#f3f4f6'}} />
@@ -231,7 +231,7 @@ function InvoiceCard({ accent }) {
         <div style={{position:'absolute', left:P,   top:102, fontSize:9, fontWeight:700, color:'#9ca3af', letterSpacing:'0.06em'}}>DESCRIPCIÓN</div>
         <div style={{position:'absolute', left:354, top:102, fontSize:9, fontWeight:700, color:'#9ca3af', letterSpacing:'0.06em'}}>CANTIDAD</div>
         <div style={{position:'absolute', left:455, top:102, fontSize:9, fontWeight:700, color:'#9ca3af', letterSpacing:'0.06em'}}>PRECIO</div>
-        <div style={{position:'absolute', left:571, top:102, fontSize:9, fontWeight:700, color:'#9ca3af', letterSpacing:'0.06em'}}>TOTAL</div>
+        <div style={{position:'absolute', right:P, top:102, fontSize:9, fontWeight:700, color:'#9ca3af', letterSpacing:'0.06em', textAlign:'right'}}>TOTAL</div>
 
         {/* divider */}
         <div style={{position:'absolute', left:P, top:116, width:inner, height:1, background:'#f3f4f6'}} />
@@ -241,7 +241,7 @@ function InvoiceCard({ accent }) {
         <div style={{position:'absolute', left:P,   top:146, fontSize:11, fontWeight:400, color:'#9ca3af', lineHeight:'13px'}}>Landing page corporativa + responsive.</div>
         <div style={{position:'absolute', left:375, top:132, fontSize:13, fontWeight:400, color:'#374151'}}>1</div>
         <div style={{position:'absolute', left:455, top:132, fontSize:13, fontWeight:400, color:'#374151'}}>1100 €</div>
-        <div style={{position:'absolute', left:571, top:132, fontSize:13, fontWeight:600, color:'#1f2937'}}>1100 €</div>
+        <div style={{position:'absolute', right:P, top:132, fontSize:13, fontWeight:600, color:'#1f2937', textAlign:'right'}}>1100 €</div>
 
         {/* divider */}
         <div style={{position:'absolute', left:P, top:172, width:inner, height:1, background:'#f9fafb'}} />
@@ -251,7 +251,7 @@ function InvoiceCard({ accent }) {
         <div style={{position:'absolute', left:P,   top:202, fontSize:11, fontWeight:400, color:'#9ca3af', lineHeight:'13px'}}>Logotipo, paleta de colores y guía de marca.</div>
         <div style={{position:'absolute', left:375, top:188, fontSize:13, fontWeight:400, color:'#374151'}}>1</div>
         <div style={{position:'absolute', left:455, top:188, fontSize:13, fontWeight:400, color:'#374151'}}>546 €</div>
-        <div style={{position:'absolute', left:571, top:188, fontSize:13, fontWeight:600, color:'#1f2937'}}>546 €</div>
+        <div style={{position:'absolute', right:P, top:188, fontSize:13, fontWeight:600, color:'#1f2937', textAlign:'right'}}>546 €</div>
 
         {/* divider */}
         <div style={{position:'absolute', left:P, top:226, width:inner, height:1, background:'#f9fafb'}} />
@@ -278,16 +278,16 @@ function InvoiceCard({ accent }) {
         <div style={{position:'absolute', left:P, top:309, fontSize:11, fontWeight:400, color:'#9ca3af', lineHeight:'13px'}}>Pago por transferencia bancaria</div>
 
         {/* Totales (derecha) */}
-        <div style={{position:'absolute', left:456, top:284, fontSize:10, fontWeight:500, color:'#9ca3af'}}>SUBTOTAL</div>
-        <div style={{position:'absolute', left:571, top:284, fontSize:12, fontWeight:400, color:'#6b7280'}}>1646 €</div>
+        <div style={{position:'absolute', right:P+178, top:284, fontSize:10, fontWeight:500, color:'#9ca3af'}}>SUBTOTAL</div>
+        <div style={{position:'absolute', right:P, top:284, fontSize:12, fontWeight:400, color:'#6b7280', textAlign:'right'}}>1646 €</div>
 
-        <div style={{position:'absolute', left:456, top:305, fontSize:10, fontWeight:500, color:'#9ca3af'}}>IVA (21%)</div>
-        <div style={{position:'absolute', left:571, top:305, fontSize:12, fontWeight:400, color:'#6b7280'}}>345,66 €</div>
+        <div style={{position:'absolute', right:P+178, top:305, fontSize:10, fontWeight:500, color:'#9ca3af'}}>IVA (21%)</div>
+        <div style={{position:'absolute', right:P, top:305, fontSize:12, fontWeight:400, color:'#6b7280', textAlign:'right'}}>345,66 €</div>
 
-        <div style={{position:'absolute', left:456, top:323, width:178, height:1, background:'#e5e7eb'}} />
+        <div style={{position:'absolute', right:P, top:323, width:178, height:1, background:'#e5e7eb'}} />
 
-        <div style={{position:'absolute', left:456, top:335, fontSize:12, fontWeight:700, color:'#111827'}}>TOTAL</div>
-        <div style={{position:'absolute', left:571, top:334, fontSize:13, fontWeight:700, color:'#111827'}}>1991,66 €</div>
+        <div style={{position:'absolute', right:P+178, top:335, fontSize:12, fontWeight:700, color:'#111827'}}>TOTAL</div>
+        <div style={{position:'absolute', right:P, top:334, fontSize:13, fontWeight:700, color:'#111827', textAlign:'right'}}>1991,66 €</div>
       </div>
     </div>
   );
