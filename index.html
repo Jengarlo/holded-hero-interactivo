@@ -8,6 +8,7 @@
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
   <style>
     @font-face {
       font-family: 'Font Awesome 7 Pro';
@@ -82,6 +83,32 @@ const NAV = [
   { u:'\uf56c', label:'Impuestos'    },
   { u:'\ue473', label:'Analítica'    },
 ];
+
+/* ── QR Code real y escaneable ──────────────────────────── */
+function QRImg({ url, size }) {
+  const ref = React.useRef();
+  React.useEffect(() => {
+    if (!ref.current) return;
+    ref.current.innerHTML = '';
+    new QRCode(ref.current, {
+      text: url,
+      width: size,
+      height: size,
+      colorDark: '#111827',
+      colorLight: '#ffffff',
+      correctLevel: QRCode.CorrectLevel.M,
+    });
+    /* quita el img duplicado que genera qrcodejs en algunos casos */
+    setTimeout(() => {
+      const imgs = ref.current.querySelectorAll('img');
+      imgs.forEach(img => img.style.display = 'none');
+    }, 50);
+  }, [url, size]);
+  return (
+    <div ref={ref}
+      style={{width:size, height:size, lineHeight:0, display:'block'}} />
+  );
+}
 
 /* ─────────────────────────────────────────────────────────
    SIDEBAR  (62 × 600, #1f2937)
@@ -176,11 +203,19 @@ function InvoiceCard({ accent }) {
           position:'absolute', left:78, top:38,
           fontSize:10, fontWeight:500, color:'#9ca3af', lineHeight:'12px',
         }}>Passeig de Gràcia, 78 · 08008 Barcelona</div>
-        {/* QR */}
-        <img src={A.qr} alt="QR" style={{
-          position:'absolute', left:594, top:12,
-          width:48.5, height:48.5, display:'block',
-        }} />
+        {/* QR — escaneable, apunta a holded.com/verifactu */}
+        <div style={{
+          position:'absolute', left:590, top:10,
+          width:52, height:52,
+          background:'white',
+          borderRadius:8,
+          border:'1px solid #e5e7eb',
+          boxShadow:'0 1px 4px rgba(0,0,0,0.08)',
+          display:'flex', alignItems:'center', justifyContent:'center',
+          padding:3,
+        }}>
+          <QRImg url="https://www.holded.com/es/programa-facturacion-verifactu" size={44} />
+        </div>
       </div>
 
       {/* ── BODY  (top 71, height 448) ── */}
