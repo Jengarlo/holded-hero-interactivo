@@ -271,16 +271,16 @@ function InvoiceCard({ accent }) {
                 {!isNew && <div style={{position:'absolute', left:P, top:28, fontSize:11, fontWeight:400, color:'#9ca3af', lineHeight:'13px'}}>{line.desc}</div>}
                 {isNew
                   ? <input type="number" min="0" value={line.qty} onChange={e=>updateLine(line.id,'qty',e.target.value)}
-                      style={inpStyle({left:375, top:19, width:50, fontSize:13, fontWeight:400, color:accent})} />
+                      style={inpStyle({left:375, top:19, width:50, fontSize:13, fontWeight:400, color:'#374151'})} />
                   : <div style={{position:'absolute', left:375, top:15, fontSize:13, fontWeight:400, color:'#374151'}}>{line.qty}</div>
                 }
                 {isNew
                   ? <input type="number" min="0" value={line.price||''} placeholder="0" onChange={e=>updateLine(line.id,'price',e.target.value)}
-                      style={inpStyle({left:455, top:19, width:90, fontSize:13, fontWeight:400, color:accent})} />
+                      style={inpStyle({left:455, top:19, width:90, fontSize:13, fontWeight:400, color:'#374151'})} />
                   : <div style={{position:'absolute', left:455, top:15, fontSize:13, fontWeight:400, color:'#374151'}}>{line.price > 0 ? fmt(line.price) : '—'}</div>
                 }
                 <div style={{position:'absolute', right:P, top: isNew ? 19 : 15, fontSize:13, fontWeight:600,
-                  color: isNew ? accent : '#1f2937', textAlign:'right'}}>
+                  color:'#1f2937', textAlign:'right'}}>
                   {line.qty*line.price > 0 ? fmt(line.qty*line.price) : '—'}
                 </div>
               </div>
@@ -409,8 +409,8 @@ function RightPanel({ accent, onAccentChange }) {
               ['Fecha',            '29/03/2026'],
             ].map(([k,v]) => (
               <div key={k} style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
-                <span style={{fontSize:10, fontWeight:500, color:'#9ca3af'}}>{k}</span>
-                <span style={{fontSize:10, fontWeight:600, color:'#111827'}}>{v}</span>
+                <span style={{fontSize:11, fontWeight:500, color:'#9ca3af'}}>{k}</span>
+                <span style={{fontSize:11, fontWeight:600, color:'#111827'}}>{v}</span>
               </div>
             ))}
           </div>
@@ -425,10 +425,10 @@ function RightPanel({ accent, onAccentChange }) {
           }}>
             <img src={A.check} alt="" style={{width:20, height:20, flexShrink:0, display:'block'}} />
             <div>
-              <p style={{fontSize:10, fontWeight:600, color:'#166534', lineHeight:'12px'}}>
+              <p style={{fontSize:11, fontWeight:600, color:'#166534', lineHeight:'13px'}}>
                 Revisada por tu asesor
               </p>
-              <p style={{fontSize:10, fontWeight:500, color:'#111827', marginTop:4, lineHeight:'12px'}}>
+              <p style={{fontSize:11, fontWeight:500, color:'#111827', marginTop:4, lineHeight:'13px'}}>
                 M. García · 31/03/2026
               </p>
             </div>
@@ -443,14 +443,14 @@ function RightPanel({ accent, onAccentChange }) {
               background:'#f3f4f6', borderRadius:4, padding:'4px 9px',
             }}>
               <img src={A.dot} alt="" style={{width:6, height:6, display:'block'}} />
-              <span style={{fontSize:10, fontWeight:600, color:'#111827'}}>
+              <span style={{fontSize:11, fontWeight:600, color:'#111827'}}>
                 {approved ? 'Aprobada' : 'Borrador'}
               </span>
             </div>
             {!approved && (
               <button className="aprobar-btn"
                 onClick={() => setApproved(true)}
-                style={{fontSize:10, fontWeight:600, color:'#1963ef', padding:0}}>
+                style={{fontSize:11, fontWeight:600, color:'#1963ef', padding:0}}>
                 Aprobar
               </button>
             )}
@@ -465,13 +465,13 @@ function RightPanel({ accent, onAccentChange }) {
               display:'flex', justifyContent:'space-between', alignItems:'center',
               padding:'4px 0',
             }}>
-              <span style={{fontSize:10, fontWeight:500, color:'#9ca3af'}}>Cuenta contable</span>
+              <span style={{fontSize:11, fontWeight:500, color:'#9ca3af'}}>Cuenta contable</span>
               <div style={{
                 display:'inline-flex', alignItems:'center', gap:4,
                 background:'#f3f4f6', borderRadius:4, padding:'4px 9px',
               }}>
                 <img src={A.brandDot} alt="" style={{width:8, height:8, display:'block'}} />
-                <span style={{fontSize:10, fontWeight:600, color:'#111827'}}>Prestación de servicios</span>
+                <span style={{fontSize:11, fontWeight:600, color:'#111827'}}>Prestación de servicios</span>
               </div>
             </div>
           </div>
@@ -494,7 +494,7 @@ function RightPanel({ accent, onAccentChange }) {
               ))}
               <button style={{
                 width:38, height:18, borderRadius:4,
-                background:'#f3f4f6', fontSize:10, fontWeight:500, color:'#9ca3af',
+                background:'#f3f4f6', fontSize:11, fontWeight:500, color:'#9ca3af',
               }}>+100</button>
             </div>
           </div>
@@ -512,10 +512,10 @@ function RightPanel({ accent, onAccentChange }) {
               </div>
               <div style={{background:'#f9fafb', borderRadius:6, padding:'8px 10px', flex:1}}>
                 <div style={{display:'flex', justifyContent:'space-between', marginBottom:3}}>
-                  <span style={{fontSize:10, fontWeight:600, color:'#374151'}}>{m.name}</span>
+                  <span style={{fontSize:11, fontWeight:600, color:'#374151'}}>{m.name}</span>
                   <span style={{fontSize:9, color:'#9ca3af'}}>{m.time}</span>
                 </div>
-                <p style={{fontSize:10, color:'#6b7280', lineHeight:'15px'}}>{m.text}</p>
+                <p style={{fontSize:11, color:'#6b7280', lineHeight:'16px'}}>{m.text}</p>
               </div>
             </div>
           ))}
@@ -528,7 +528,7 @@ function RightPanel({ accent, onAccentChange }) {
               placeholder="Escribe un mensaje…"
               style={{
                 flex:1, border:'1px solid #e5e7eb', borderRadius:6,
-                padding:'7px 10px', fontSize:10, color:'#374151',
+                padding:'7px 10px', fontSize:11, color:'#374151',
               }}
             />
             <button onClick={sendMsg} style={{
@@ -558,7 +558,7 @@ function RightPanel({ accent, onAccentChange }) {
                   <div style={{width:1, flex:1, background:'#e5e7eb', marginTop:3}} />}
               </div>
               <div style={{paddingBottom: i < items.length-1 ? 10 : 0}}>
-                <p style={{fontSize:10, fontWeight:600, color:'#374151', lineHeight:'16px'}}>{item.action}</p>
+                <p style={{fontSize:11, fontWeight:600, color:'#374151', lineHeight:'16px'}}>{item.action}</p>
                 <p style={{fontSize:9, color:'#9ca3af', marginTop:2}}>{item.user} · {item.time}</p>
               </div>
             </div>
