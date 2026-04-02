@@ -607,13 +607,16 @@ function RightPanel({ accent, onAccentChange, invoiceTotal }) {
 
         {/* ═══════ MENSAJES ═══════ */}
         {tab==='mensajes' && <>
-          {msgs.map((m,i) => (
-            <div key={i} style={{display:'flex', gap:8, alignItems:'flex-start'}}>
+          {msgs.map((m,i) => {
+            const isOwn = m.name === 'Tú';
+            return (
+            <div key={i} style={{display:'flex', gap:8, alignItems:'flex-start', flexDirection: isOwn ? 'row-reverse' : 'row'}}>
               <div style={{
-                width:26, height:26, borderRadius:13, background:m.color, flexShrink:0,
+                width:28, height:28, borderRadius:'50%', flexShrink:0,
+                background: isOwn ? '#f3f0ff' : m.color,
                 display:'flex', alignItems:'center', justifyContent:'center',
               }}>
-                <span style={{fontSize:9, fontWeight:700, color:'white'}}>{m.initials}</span>
+                <span style={{fontSize: isOwn ? 13 : 10, fontWeight:700, color: isOwn ? '#7c5cfc' : 'white'}}>{m.initials}</span>
               </div>
               <div className="msg-bubble" style={{background:'#f9fafb', borderRadius:6, padding:'10px 12px', flex:1}}>
                 <div style={{display:'flex', justifyContent:'space-between', marginBottom:4}}>
@@ -623,7 +626,8 @@ function RightPanel({ accent, onAccentChange, invoiceTotal }) {
                 <p style={{fontSize:12, color:'#6b7280', lineHeight:'17px'}}>{m.text}</p>
               </div>
             </div>
-          ))}
+            );
+          })}
           <div style={{display:'flex', gap:6}}>
             <input
               className="msg-input"
@@ -661,7 +665,7 @@ function RightPanel({ accent, onAccentChange, invoiceTotal }) {
                   <div style={{width:6, height:6, borderRadius:3, background:'#1963ef'}} />
                 </div>
                 {i < items.length-1 &&
-                  <div style={{width:1, flex:1, background:'#e5e7eb', marginTop:3}} />}
+                  <div style={{width:1, flex:1, background:'#e5e7eb', marginTop:2, marginBottom:-8}} />}
               </div>
               <div style={{paddingBottom: i < items.length-1 ? 10 : 0}}>
                 <p style={{fontSize:11, fontWeight:600, color:'#374151', lineHeight:'16px'}}>{item.action}</p>
