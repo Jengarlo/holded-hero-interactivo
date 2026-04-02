@@ -640,13 +640,13 @@ function RightPanel({ accent, onAccentChange, invoiceTotal }) {
               <div style={{position:'relative', flex:'none', maxWidth:'calc(100% - 74px)'}}>
                 {/* Cola del bubble */}
                 {!isOwn && (
-                  <svg width="7" height="12" viewBox="0 0 7 12" style={{position:'absolute', left:-6, top:10, display:'block'}}>
-                    <path d="M7 0 Q1 6 7 12" fill="#f1f2f4"/>
+                  <svg width="10" height="16" viewBox="0 0 10 16" style={{position:'absolute', left:-9, top:10, display:'block'}}>
+                    <path d="M10 2 L2 8 L10 14 Z" fill="#f1f2f4"/>
                   </svg>
                 )}
                 {isOwn && (
-                  <svg width="7" height="12" viewBox="0 0 7 12" style={{position:'absolute', right:-6, top:10, display:'block'}}>
-                    <path d="M0 0 Q6 6 0 12" fill="#f1f2f4"/>
+                  <svg width="10" height="16" viewBox="0 0 10 16" style={{position:'absolute', right:-9, top:10, display:'block'}}>
+                    <path d="M0 2 L8 8 L0 14 Z" fill="#f1f2f4"/>
                   </svg>
                 )}
                 <div className="msg-bubble" style={{background:'#f1f2f4', borderRadius:6, padding:'10px 12px'}}>
