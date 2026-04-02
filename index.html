@@ -51,11 +51,16 @@
     .msg-bubble:hover { background: #f0f1f3 !important; }
     .hist-row { border-radius: 6px; transition: background .12s; cursor: default; }
     .hist-row:hover { background: #f3f4f6; }
-    .hist-dot { animation: hist-reveal 0.45s cubic-bezier(.36,.07,.19,.97) both; }
+    .hist-dot { animation: hist-reveal 0.9s cubic-bezier(.36,.07,.19,.97) both; }
     @keyframes hist-reveal {
-      0%   { transform: scale(0); opacity: 0; }
-      65%  { transform: scale(1.25); opacity: 1; box-shadow: 0 0 0 5px rgba(25,99,239,0.15); }
-      100% { transform: scale(1);   opacity: 1; box-shadow: 0 0 0 0px rgba(25,99,239,0); }
+      0%   { transform: scale(1); background: #e5e7eb; box-shadow: 0 0 0 0px rgba(25,99,239,0); }
+      55%  { transform: scale(1.25); background: #eff6ff; box-shadow: 0 0 0 6px rgba(25,99,239,0.12); }
+      100% { transform: scale(1);   background: #eff6ff; box-shadow: 0 0 0 0px rgba(25,99,239,0); }
+    }
+    .hist-dot-inner { animation: hist-dot-color 0.9s ease-out both; }
+    @keyframes hist-dot-color {
+      0%   { background: #9ca3af; }
+      100% { background: #1963ef; }
     }
     .logo-box { transition: background .4s ease; }
     .logo-pop { animation: logo-pop .45s cubic-bezier(.36,.07,.19,.97); }
@@ -669,12 +674,12 @@ function RightPanel({ accent, onAccentChange, invoiceTotal }) {
               {items.map((item,i) => (
                 <div key={i} className="hist-row" style={{display:'flex', gap:10, alignItems:'center', padding:'4px 6px', paddingBottom: i < items.length-1 ? 24 : 4}}>
                   <div className="hist-dot" style={{
-                    width:18, height:18, borderRadius:9, background:'#eff6ff', flexShrink:0,
+                    width:18, height:18, borderRadius:9, flexShrink:0,
                     display:'flex', alignItems:'center', justifyContent:'center',
                     position:'relative', zIndex:1,
-                    animationDelay: `${i * 0.25}s`,
+                    animationDelay: `${i * 0.45}s`,
                   }}>
-                    <div style={{width:6, height:6, borderRadius:3, background:'#1963ef'}} />
+                    <div className="hist-dot-inner" style={{width:6, height:6, borderRadius:3, animationDelay: `${i * 0.45}s`}} />
                   </div>
                   <div>
                     <p style={{fontSize:12, fontWeight:600, color:'#374151', lineHeight:'17px'}}>{item.action}</p>
