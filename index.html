@@ -175,8 +175,13 @@ function Sidebar() {
 
       {/* Avatar */}
       <div style={{paddingTop:20, paddingBottom:20}}>
-        <img src={A.avatar} alt="Avatar"
-          style={{width:19.605, height:19.605, borderRadius:14, objectFit:'cover', display:'block'}} />
+        <div style={{
+          width:20, height:20, borderRadius:6,
+          background:'#f3f0ff',
+          display:'flex', alignItems:'center', justifyContent:'center',
+        }}>
+          <span style={{fontFamily:'Inter', fontWeight:700, fontSize:11, color:'#7c5cfc', lineHeight:1}}>B</span>
+        </div>
       </div>
     </div>
   );
