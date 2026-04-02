@@ -685,7 +685,6 @@ function RightPanel({ accent, onAccentChange, invoiceTotal }) {
 
       {/* ── INPUT MENSAJE ── */}
       {tab==='mensajes' && <>
-        <div style={{height:1, background:'#f3f4f6', flexShrink:0}} />
         <div style={{padding:'20px 30px', flexShrink:0, display:'flex', gap:6}}>
           <input
             className="msg-input"
@@ -705,6 +704,7 @@ function RightPanel({ accent, onAccentChange, invoiceTotal }) {
             lineHeight:1, paddingBottom:2,
           }}>›</button>
         </div>
+        <div style={{height:1, background:'#f3f4f6', flexShrink:0}} />
       </>}
 
       {/* ── BOTÓN ENVIAR ── */}
