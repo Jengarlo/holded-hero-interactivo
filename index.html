@@ -103,21 +103,22 @@
     .verifactu-intro .verifactu-shine { animation: destello 1.2s ease 1s forwards; }
   </style>
 <script>
+  // Prevent scroll-to-focus: briefly mark input readonly so browser skips scroll,
+  // then restore immediately so typing works normally.
+  document.addEventListener('mousedown', function(e) {
+    var t = e.target;
+    if (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA') {
+      t.setAttribute('readonly', '');
+      setTimeout(function() { t.removeAttribute('readonly'); }, 0);
+    }
+  }, true);
+  // Also block any residual scroll reset
   function lockScroll() {
     window.scrollTo(0, 0);
     document.documentElement.scrollTop = 0;
     document.body.scrollTop = 0;
   }
-  // Reset instantly and on next frames after any focus on input
-  document.addEventListener('focusin', function(e) {
-    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
-      lockScroll();
-      requestAnimationFrame(lockScroll);
-      requestAnimationFrame(function(){ requestAnimationFrame(lockScroll); });
-    }
-  }, true);
   window.addEventListener('scroll', lockScroll, { passive: false });
-  document.addEventListener('scroll', lockScroll, { passive: false, capture: true });
 </script>
 </head>
 <body>
