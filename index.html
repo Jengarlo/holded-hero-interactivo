@@ -36,6 +36,7 @@
     .nav-btn { transition: background .12s; }
     .nav-btn:hover { background: rgba(255,255,255,.07) !important; }
     .tab-pill { transition: background .12s, color .12s; }
+    .tab-pill:not(.tab-active):hover { background: #d1d5db !important; }
     .swatch-sq { transition: transform .12s; border: none; padding: 0; }
     .swatch-sq:hover { transform: scale(1.2); }
     .aprobar-btn { transition: color .12s; }
@@ -435,7 +436,7 @@ function RightPanel({ accent, onAccentChange, invoiceTotal }) {
         <div style={{display:'flex', gap:6, paddingBottom:16}}>
         {[['general','General'],['mensajes','Mensajes'],['historial','Historial']].map(([id,lbl]) => (
           <button key={id} onClick={() => setTab(id)}
-            className="tab-pill"
+            className={`tab-pill${tab===id ? ' tab-active' : ''}`}
             style={{
               flex:1,
               height:34,
