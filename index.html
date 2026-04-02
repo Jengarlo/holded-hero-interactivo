@@ -335,14 +335,14 @@ function InvoiceCard({ accent, onTotalChange }) {
                   ? <input
                       autoFocus={line.id === lastNewId}
                       placeholder="Nuevo artículo"
-                      value={line.name} onChange={e=>updateLine(line.id,'name',e.target.value)}
+                      value={line.name} onChange={e=>updateLine(line.id,'name',e.target.value)} onFocus={e=>e.target.select()}
                       style={inpStyle({left:P, top:19, width:290, fontSize:12, fontWeight:600, color:'#1f2937', '--placeholder-color':'#9ca3af'})} />
                   : <div style={{position:'absolute', left:P, top:10, fontSize:12, fontWeight:600, color:'#1f2937', lineHeight:'13px'}}>{line.name}</div>
                 }
                 {!isNew && <div style={{position:'absolute', left:P, top:28, fontSize:12, fontWeight:400, color:'#9ca3af', lineHeight:'13px'}}>{line.desc}</div>}
                 {isNew
                   ? <div style={{position:'absolute', right:216, top:15, display:'flex', alignItems:'center', gap:3}}>
-                      <input type="number" min="0" value={line.qty||''} placeholder="0" onChange={e=>updateLine(line.id,'qty',e.target.value)}
+                      <input type="number" min="0" value={line.qty||''} placeholder="0" onChange={e=>updateLine(line.id,'qty',e.target.value)} onFocus={e=>e.target.select()}
                         style={{width:40, fontSize:12, fontWeight:400, color:'#374151', textAlign:'right', background:'transparent', border:'none', outline:'none', fontFamily:'inherit', padding:0}} />
                       <span style={{fontSize:12, fontWeight:400, color:'#374151'}}>uds.</span>
                     </div>
@@ -350,7 +350,7 @@ function InvoiceCard({ accent, onTotalChange }) {
                 }
                 {isNew
                   ? <div style={{position:'absolute', right:113, top:15, display:'flex', alignItems:'center', gap:3}}>
-                      <input type="number" min="0" value={line.price||''} placeholder="0" onChange={e=>updateLine(line.id,'price',e.target.value)}
+                      <input type="number" min="0" value={line.price||''} placeholder="0" onChange={e=>updateLine(line.id,'price',e.target.value)} onFocus={e=>e.target.select()}
                         style={{width:60, fontSize:12, fontWeight:400, color:'#374151', textAlign:'right', background:'transparent', border:'none', outline:'none', fontFamily:'inherit', padding:0}} />
                       <span style={{fontSize:12, fontWeight:400, color:'#374151'}}>€</span>
                     </div>
