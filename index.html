@@ -442,7 +442,7 @@ function RightPanel({ accent, onAccentChange, invoiceTotal }) {
               fontSize:12, fontWeight:600,
               color:       tab===id ? 'white'   : '#111827',
               background:  tab===id ? '#111827' : '#e5e7eb',
-              borderRadius:4,
+              borderRadius:6,
             }}>
             {lbl}
           </button>
@@ -481,7 +481,7 @@ function RightPanel({ accent, onAccentChange, invoiceTotal }) {
 
           {/* Badge verde — Revisada */}
           <div style={{
-            background:'#ecfdf5', borderRadius:4,
+            background:'#ecfdf5', borderRadius:6,
             padding:12,
             display:'flex', alignItems:'center', gap:12,
           }}>
@@ -503,7 +503,7 @@ function RightPanel({ accent, onAccentChange, invoiceTotal }) {
             {approved ? (
               <div style={{
                 display:'inline-flex', alignItems:'center', gap:4,
-                background:'#ebfbf5', borderRadius:4, padding:'4px 9px',
+                background:'#ebfbf5', borderRadius:6, padding:'4px 9px',
               }}>
                 <img src="https://www.figma.com/api/mcp/asset/8d2a9d83-a7ea-4a61-8560-786a6ff92801" alt="" style={{width:8, height:8, display:'block'}} />
                 <span style={{fontSize:11, fontWeight:600, color:'#1b8751', lineHeight:'12px'}}>Aprobada</span>
@@ -511,7 +511,7 @@ function RightPanel({ accent, onAccentChange, invoiceTotal }) {
             ) : (
               <div style={{
                 display:'inline-flex', alignItems:'center', gap:4,
-                background:'#f3f4f6', borderRadius:4, padding:'4px 9px',
+                background:'#f3f4f6', borderRadius:6, padding:'4px 9px',
               }}>
                 <img src={A.dot} alt="" style={{width:8, height:8, display:'block'}} />
                 <span style={{fontSize:11, fontWeight:600, color:'#111827', lineHeight:'12px'}}>Borrador</span>
@@ -538,7 +538,7 @@ function RightPanel({ accent, onAccentChange, invoiceTotal }) {
               <span style={{fontSize:11, fontWeight:500, color:'#9ca3af'}}>Cuenta contable</span>
               <div style={{
                 display:'inline-flex', alignItems:'center', gap:4,
-                background:'#f3f4f6', borderRadius:4, padding:'4px 9px',
+                background:'#f3f4f6', borderRadius:6, padding:'4px 9px',
               }}>
                 <img src={A.brandDot} alt="" style={{width:6, height:6, display:'block'}} />
                 <span style={{fontSize:10, fontWeight:600, color:'#111827'}}>Prestación de servicios</span>
@@ -646,7 +646,7 @@ function RightPanel({ accent, onAccentChange, invoiceTotal }) {
         <button className="enviar-btn" style={{
           width:'100%', padding:'10px 20px',
           background: '#1963ef', color:'white',
-          borderRadius:4, fontSize:12, fontWeight:600,
+          borderRadius:6, fontSize:12, fontWeight:600,
           display:'flex', alignItems:'center', justifyContent:'center', gap:6,
         }}>
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none"
