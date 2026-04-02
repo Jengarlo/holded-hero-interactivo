@@ -46,6 +46,7 @@
     .enviar-btn:hover svg { fill: white; }
     .enviar-btn:active { transform: scale(.98); }
     .add-line-btn { transition: color .12s; }
+    input::placeholder { color: #9ca3af; font-weight: 400; }
     .msg-bubble { transition: background .12s; cursor: default; }
     .msg-bubble:hover { background: #f0f1f3 !important; }
     .hist-row { border-radius: 6px; transition: background .12s; cursor: default; }
@@ -232,7 +233,12 @@ function InvoiceCard({ accent, onTotalChange }) {
   }, [accent]);
   const removeLine = (id) => setLines(l => l.filter(ln => ln.id !== id));
 
-  const addLine    = () => setLines(l => [...l, { id:Date.now(), name:'Nuevo concepto', desc:'', qty:1, price:0 }]);
+  const [lastNewId, setLastNewId] = React.useState(null);
+  const addLine = () => {
+    const id = Date.now();
+    setLines(l => [...l, { id, name:'', desc:'', qty:1, price:0 }]);
+    setLastNewId(id);
+  };
   const updateLine = (id, field, val) => setLines(l => l.map(ln =>
     ln.id === id ? { ...ln, [field]: (field==='qty'||field==='price') ? (parseFloat(val)||0) : val } : ln
   ));
@@ -325,8 +331,11 @@ function InvoiceCard({ accent, onTotalChange }) {
                   background: (isNew && focusedId === line.id) ? hexRgba(accent, 0.10) : 'transparent',
                 }}>
                 {isNew
-                  ? <input value={line.name} onChange={e=>updateLine(line.id,'name',e.target.value)}
-                      style={inpStyle({left:P, top:19, width:290, fontSize:12, fontWeight:600, color:'#1f2937'})} />
+                  ? <input
+                      autoFocus={line.id === lastNewId}
+                      placeholder="Nuevo artículo"
+                      value={line.name} onChange={e=>updateLine(line.id,'name',e.target.value)}
+                      style={inpStyle({left:P, top:19, width:290, fontSize:12, fontWeight:600, color:'#1f2937', '--placeholder-color':'#9ca3af'})} />
                   : <div style={{position:'absolute', left:P, top:10, fontSize:12, fontWeight:600, color:'#1f2937', lineHeight:'13px'}}>{line.name}</div>
                 }
                 {!isNew && <div style={{position:'absolute', left:P, top:28, fontSize:12, fontWeight:400, color:'#9ca3af', lineHeight:'13px'}}>{line.desc}</div>}
