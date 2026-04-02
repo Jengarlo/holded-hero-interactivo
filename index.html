@@ -626,7 +626,7 @@ function RightPanel({ accent, onAccentChange, invoiceTotal }) {
 
         {/* ═══════ MENSAJES ═══════ */}
         {tab==='mensajes' && <React.Fragment>
-          <div style={{marginTop:4}} />
+          <div style={{flex:1}} />
           {msgs.map((m,i) => {
             const isOwn = m.name === 'Yo';
             return (
