@@ -638,7 +638,7 @@ function RightPanel({ accent, onAccentChange, invoiceTotal }) {
               }}>
                 <span style={{fontSize:13, fontWeight:700, color: isOwn ? '#7c5cfc' : '#0891b2'}}>{m.initials}</span>
               </div>
-              <div style={{position:'relative', flex:'none', width:'calc(100% - 74px)'}}>
+              <div style={{position:'relative', flex:'none', maxWidth:'calc(100% - 74px)'}}>
                 {/* Cola del bubble */}
                 {!isOwn && (
                   <svg width="7" height="12" viewBox="0 0 7 12" style={{position:'absolute', left:-6, top:10, display:'block'}}>
