@@ -101,6 +101,12 @@
       100% { transform: scale(1);   opacity: 1; }
     }
     .verifactu-intro .verifactu-shine { animation: destello 1.2s ease 1s forwards; }
+    .check-pop { animation: check-pop 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s both; }
+    @keyframes check-pop {
+      0%   { transform: scale(0); opacity: 0; }
+      60%  { transform: scale(1.18); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
+    }
   </style>
 <script>
   // Prevent scroll-to-focus: briefly mark input readonly so browser skips scroll,
@@ -563,7 +569,7 @@ function RightPanel({ accent, onAccentChange, invoiceTotal }) {
             padding:12,
             display:'flex', alignItems:'center', gap:12,
           }}>
-            <img src={A.check} alt="" style={{width:20, height:20, flexShrink:0, display:'block'}} />
+            <img src={A.check} alt="" className="check-pop" style={{width:20, height:20, flexShrink:0, display:'block'}} />
             <div>
               <p style={{fontSize:12, fontWeight:600, color:'#166534', lineHeight:'14px'}}>
                 Revisada por tu asesor
