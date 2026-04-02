@@ -50,6 +50,14 @@
     .msg-bubble:hover { background: #f0f1f3 !important; }
     .hist-row { border-radius: 6px; transition: background .12s; cursor: default; }
     .hist-row:hover { background: #f3f4f6; }
+    .logo-box { transition: background .4s ease; }
+    .logo-pop { animation: logo-pop .45s cubic-bezier(.36,.07,.19,.97); }
+    @keyframes logo-pop {
+      0%   { transform: scale(1)    rotate(0deg); }
+      30%  { transform: scale(1.18) rotate(-8deg); }
+      60%  { transform: scale(1.12) rotate(6deg); }
+      100% { transform: scale(1)    rotate(0deg); }
+    }
     .mockup-scale { transform-origin: top center; }
     @media (max-width: 1350px) { .mockup-scale { transform: scale(0.82); } }
     @media (max-width: 1100px) { .mockup-scale { transform: scale(0.68); } }
@@ -214,6 +222,14 @@ function InvoiceCard({ accent, onTotalChange }) {
 
   const [focusedId, setFocusedId] = React.useState(null);
   const [hoveredId, setHoveredId] = React.useState(null);
+  const [logoPop,   setLogoPop]   = React.useState(false);
+  const isFirst = React.useRef(true);
+  React.useEffect(() => {
+    if (isFirst.current) { isFirst.current = false; return; }
+    setLogoPop(true);
+    const t = setTimeout(() => setLogoPop(false), 500);
+    return () => clearTimeout(t);
+  }, [accent]);
   const removeLine = (id) => setLines(l => l.filter(ln => ln.id !== id));
 
   const addLine    = () => setLines(l => [...l, { id:Date.now(), name:'Nuevo concepto', desc:'', qty:1, price:0 }]);
@@ -244,7 +260,8 @@ function InvoiceCard({ accent, onTotalChange }) {
         <div style={{position:'absolute', bottom:0, left:P, right:P, height:1, background:'#f3f4f6'}} />
         {/* Logo + texto en flex, altura fija igual al logo box */}
         <div style={{display:'flex', alignItems:'flex-start', gap:10, height:44, flexShrink:0}}>
-          <div style={{width:44, height:44, flexShrink:0, background:accent, borderRadius:10,
+          <div className={`logo-box${logoPop ? ' logo-pop' : ''}`}
+            style={{width:44, height:44, flexShrink:0, background:accent, borderRadius:10,
             display:'flex', alignItems:'center', justifyContent:'center'}}>
             <img src={A.group} alt="" style={{width:25.658, height:26.131, display:'block', filter:'brightness(0) invert(1)'}} />
           </div>
