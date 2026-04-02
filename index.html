@@ -432,7 +432,7 @@ function RightPanel({ accent, onAccentChange, invoiceTotal }) {
   const [tab,      setTab]      = useState('general');
   const [approved, setApproved] = useState(false);
   const [msgs,     setMsgs]     = useState([
-    { initials:'MG', color:'#0891b2', name:'M. García',
+    { initials:'MG', color:'#0891b2', name:'María García',
       time:'31/03/2026 · 10:45', text:'Factura revisada y aprobada. Todo correcto.' },
   ]);
   const [msgInput, setMsgInput] = useState('');
@@ -526,7 +526,7 @@ function RightPanel({ accent, onAccentChange, invoiceTotal }) {
                 Revisada por tu asesor
               </p>
               <p style={{fontSize:12, fontWeight:500, color:'#111827', marginTop:4, lineHeight:'14px'}}>
-                M. García · 31/03/2026
+                María García · 31/03/2026
               </p>
             </div>
           </div>
@@ -653,7 +653,7 @@ function RightPanel({ accent, onAccentChange, invoiceTotal }) {
         {tab==='historial' && (() => {
           const items = [
             { action:'Factura creada',             user:'B. González', time:'29/03/2026 · 09:12' },
-            { action:'Revisada por el Asesor',      user:'M. García',   time:'31/03/2026 · 10:44' },
+            { action:'Revisada por el Asesor',      user:'María García',   time:'31/03/2026 · 10:44' },
             { action:'Enviada por email',           user:'B. González', time:'31/03/2026 · 11:01' },
           ];
           return (
