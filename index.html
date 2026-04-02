@@ -53,12 +53,8 @@
     .verifactu-wrap { position: relative; display: inline-block; cursor: pointer; transition: transform .3s ease; }
     .verifactu-wrap:hover { transform: scale(1.05); }
     .verifactu-shine {
-      position: absolute;
-      top: -10%; left: -70%;
-      width: 45%; height: 120%;
       background: linear-gradient(to right, transparent, rgba(255,255,255,0.38) 50%, transparent);
       transform: skewX(-15deg);
-      border-radius: 4px;
       pointer-events: none;
       opacity: 0;
     }
@@ -636,10 +632,13 @@ function App() {
 
       <div className="mockup-scale" style={{position:'relative'}}>
         {/* Verifactu badge */}
-        <div className="verifactu-wrap" style={{position:'absolute', top:-59, right:-54, width:112, height:112, zIndex:10, borderRadius:'50%', overflow:'hidden'}}>
+        <div className="verifactu-wrap" style={{position:'absolute', top:-59, right:-54, width:112, height:112, zIndex:10}}>
           <img src={A.verifactu} alt="Verifactu Software Certificado"
             style={{width:112, height:112, display:'block'}} />
-          <div className="verifactu-shine" />
+          {/* clip interior al círculo visual del badge — inset ~6px */}
+          <div style={{position:'absolute', inset:6, borderRadius:'50%', overflow:'hidden', pointerEvents:'none'}}>
+            <div className="verifactu-shine" style={{position:'absolute', top:'-10%', left:'-70%', width:'45%', height:'120%'}} />
+          </div>
         </div>
 
         {/* ─── LA CARD ─── */}
