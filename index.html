@@ -451,6 +451,8 @@ function RightPanel({ accent, onAccentChange, invoiceTotal }) {
   const [msgs,     setMsgs]     = useState([
     { initials:'MG', color:'#0891b2', name:'María García',
       time:'31/03/2026 · 10:45', text:'Factura revisada. Todo correcto, lista para aprobar.' },
+    { initials:'B',  color:'#7c5cfc', name:'Tú',
+      time:'31/03/2026 · 10:52', text:'Gracias por revisarlo tan rápido María!' },
   ]);
   const [msgInput, setMsgInput] = useState('');
 
@@ -623,7 +625,8 @@ function RightPanel({ accent, onAccentChange, invoiceTotal }) {
         </>}
 
         {/* ═══════ MENSAJES ═══════ */}
-        {tab==='mensajes' && <>
+        {tab==='mensajes' && <React.Fragment>
+          <div style={{marginTop:4}} />
           {msgs.map((m,i) => {
             const isOwn = m.name === 'Tú';
             return (
@@ -664,7 +667,7 @@ function RightPanel({ accent, onAccentChange, invoiceTotal }) {
               lineHeight:1, paddingBottom:2,
             }}>›</button>
           </div>
-        </>}
+        </React.Fragment>}
 
         {/* ═══════ HISTORIAL ═══════ */}
         {tab==='historial' && (() => {
