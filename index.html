@@ -51,6 +51,11 @@
     .msg-bubble:hover { background: #f0f1f3 !important; }
     .hist-row { border-radius: 6px; transition: background .12s; cursor: default; }
     .hist-row:hover { background: #f3f4f6; }
+    .hist-dot { animation: hist-ping 2s ease-in-out infinite; }
+    @keyframes hist-ping {
+      0%, 100% { box-shadow: 0 0 0 0px rgba(25,99,239,0.35); }
+      50%       { box-shadow: 0 0 0 4px rgba(25,99,239,0); }
+    }
     .logo-box { transition: background .4s ease; }
     .logo-pop { animation: logo-pop .45s cubic-bezier(.36,.07,.19,.97); }
     @keyframes logo-pop {
@@ -658,14 +663,15 @@ function RightPanel({ accent, onAccentChange, invoiceTotal }) {
           ];
           return (
             <div style={{position:'relative', margin:'0 -6px'}}>
-              {/* línea continua centrada en los círculos */}
-              <div style={{position:'absolute', left:15, top:13, bottom:13, width:1, background:'#e5e7eb'}} />
+              {/* línea continua: empieza/termina en el centro de cada círculo extremo */}
+              <div style={{position:'absolute', left:15, top:32, bottom:22, width:1, background:'#e5e7eb'}} />
               {items.map((item,i) => (
-                <div key={i} className="hist-row" style={{display:'flex', gap:10, alignItems:'flex-start', padding:'4px 6px', paddingBottom: i < items.length-1 ? 24 : 4}}>
-                  <div style={{
+                <div key={i} className="hist-row" style={{display:'flex', gap:10, alignItems:'center', padding:'4px 6px', paddingBottom: i < items.length-1 ? 24 : 4}}>
+                  <div className="hist-dot" style={{
                     width:18, height:18, borderRadius:9, background:'#eff6ff', flexShrink:0,
                     display:'flex', alignItems:'center', justifyContent:'center',
                     position:'relative', zIndex:1,
+                    animationDelay: `${i * 0.4}s`,
                   }}>
                     <div style={{width:6, height:6, borderRadius:3, background:'#1963ef'}} />
                   </div>
