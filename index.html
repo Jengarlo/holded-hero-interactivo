@@ -618,7 +618,7 @@ function RightPanel({ accent, onAccentChange, invoiceTotal }) {
               }}>
                 <span style={{fontSize: isOwn ? 13 : 10, fontWeight:700, color: isOwn ? '#7c5cfc' : 'white'}}>{m.initials}</span>
               </div>
-              <div className="msg-bubble" style={{background:'#f9fafb', borderRadius:6, padding:'10px 12px', flex:1}}>
+              <div className="msg-bubble" style={{background:'#f9fafb', borderRadius:6, padding:'10px 12px', maxWidth:'75%'}}>
                 <div style={{display:'flex', justifyContent:'space-between', marginBottom:4}}>
                   <span style={{fontSize:12, fontWeight:600, color:'#374151'}}>{m.name}</span>
                   <span style={{fontSize:10, color:'#9ca3af'}}>{m.time}</span>
