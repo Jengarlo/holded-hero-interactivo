@@ -25,7 +25,7 @@
   </style>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { overflow: hidden; }
+    html, body { overflow: hidden; height: 100%; }
     body { font-family: 'Inter', sans-serif; background: #0a0a0a; }
     button { font-family: inherit; cursor: pointer; border: none; background: none; }
     input, textarea { font-family: inherit; }
@@ -102,6 +102,16 @@
     }
     .verifactu-intro .verifactu-shine { animation: destello 1.2s ease 1s forwards; }
   </style>
+<script>
+  // Prevent any page scroll (caused by browser scroll-to-focus on inputs)
+  window.addEventListener('scroll', function() {
+    window.scrollTo(0, 0);
+  }, { passive: false });
+  document.addEventListener('scroll', function(e) {
+    e.preventDefault();
+    window.scrollTo(0, 0);
+  }, { passive: false, capture: true });
+</script>
 </head>
 <body>
 <div id="root"></div>
