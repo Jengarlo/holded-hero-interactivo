@@ -224,8 +224,9 @@ function InvoiceCard({ accent, onTotalChange }) {
     }}>
 
       {/* ── HEADER — padding P=30 en los 4 lados ── */}
-      <div style={{flexShrink:0, position:'relative', width:W, borderBottom:'1px solid #f3f4f6',
-        display:'flex', alignItems:'center', padding:P}}>
+      <div style={{flexShrink:0, position:'relative', width:W,
+        display:'flex', alignItems:'center', padding:P, paddingBottom:P}}>
+        <div style={{position:'absolute', bottom:0, left:P, right:P, height:1, background:'#f3f4f6'}} />
         {/* Logo + texto en flex, altura fija igual al logo box */}
         <div style={{display:'flex', alignItems:'flex-start', gap:10, height:44, flex:1, minWidth:0}}>
           <div style={{width:44, height:44, flexShrink:0, background:accent, borderRadius:10,
