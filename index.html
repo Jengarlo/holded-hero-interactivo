@@ -328,7 +328,7 @@ function InvoiceCard({ accent, onTotalChange }) {
                 onBlur={() => isNew && setFocusedId(null)}
                 onClick={e => { if (isNew && e.target === e.currentTarget) e.currentTarget.querySelector('input')?.focus(); }}
                 style={{
-                  position:'relative', height: isNew ? 64 : 52, cursor: isNew ? 'text' : 'default',
+                  position:'relative', height:52, cursor: isNew ? 'text' : 'default',
                   background: (isNew && focusedId === line.id) ? hexRgba(accent, 0.10) : 'transparent',
                 }}>
                 {isNew
@@ -336,18 +336,12 @@ function InvoiceCard({ accent, onTotalChange }) {
                       autoFocus={line.id === lastNewId}
                       placeholder="Nuevo artículo"
                       value={line.name} onChange={e=>updateLine(line.id,'name',e.target.value)} onFocus={e=>e.target.select()}
-                      style={inpStyle({left:P, top:10, width:290, fontSize:12, fontWeight:600, color:'#1f2937'})} />
+                      style={inpStyle({left:P, top:19, width:290, fontSize:12, fontWeight:600, color:'#1f2937'})} />
                   : <div style={{position:'absolute', left:P, top:10, fontSize:12, fontWeight:600, color:'#1f2937', lineHeight:'13px'}}>{line.name}</div>
                 }
+                {!isNew && <div style={{position:'absolute', left:P, top:28, fontSize:12, fontWeight:400, color:'#9ca3af', lineHeight:'13px'}}>{line.desc}</div>}
                 {isNew
-                  ? <input
-                      placeholder="Descripción del artículo"
-                      value={line.desc} onChange={e=>updateLine(line.id,'desc',e.target.value)} onFocus={e=>e.target.select()}
-                      style={inpStyle({left:P, top:30, width:290, fontSize:12, fontWeight:400, color:'#9ca3af'})} />
-                  : <div style={{position:'absolute', left:P, top:28, fontSize:12, fontWeight:400, color:'#9ca3af', lineHeight:'13px'}}>{line.desc}</div>
-                }
-                {isNew
-                  ? <div style={{position:'absolute', right:216, top:isNew?24:15, display:'flex', alignItems:'center', gap:3}}>
+                  ? <div style={{position:'absolute', right:216, top:15, display:'flex', alignItems:'center', gap:3}}>
                       <input type="number" min="0" value={line.qty||''} placeholder="0" onChange={e=>updateLine(line.id,'qty',e.target.value)} onFocus={e=>e.target.select()}
                         style={{width:40, fontSize:12, fontWeight:400, color:'#374151', textAlign:'right', background:'transparent', border:'none', outline:'none', fontFamily:'inherit', padding:0}} />
                       <span style={{fontSize:12, fontWeight:400, color:'#374151'}}>uds.</span>
@@ -355,14 +349,14 @@ function InvoiceCard({ accent, onTotalChange }) {
                   : <div style={{position:'absolute', right:216, top:15, fontSize:12, fontWeight:400, color:'#374151', textAlign:'right', width:60}}>{line.qty} uds.</div>
                 }
                 {isNew
-                  ? <div style={{position:'absolute', right:113, top:isNew?24:15, display:'flex', alignItems:'center', gap:3}}>
+                  ? <div style={{position:'absolute', right:113, top:15, display:'flex', alignItems:'center', gap:3}}>
                       <input type="number" min="0" value={line.price||''} placeholder="0" onChange={e=>updateLine(line.id,'price',e.target.value)} onFocus={e=>e.target.select()}
                         style={{width:60, fontSize:12, fontWeight:400, color:'#374151', textAlign:'right', background:'transparent', border:'none', outline:'none', fontFamily:'inherit', padding:0}} />
                       <span style={{fontSize:12, fontWeight:400, color:'#374151'}}>€</span>
                     </div>
                   : <div style={{position:'absolute', right:113, top:15, fontSize:12, fontWeight:400, color:'#374151', textAlign:'right', width:80}}>{line.price > 0 ? fmt(line.price) : '—'}</div>
                 }
-                <div style={{position:'absolute', right:P, top: isNew ? 24 : 15, fontSize:12, fontWeight:600,
+                <div style={{position:'absolute', right:P, top:15, fontSize:12, fontWeight:600,
                   color: line.qty*line.price > 0 ? '#1f2937' : '#9ca3af', textAlign:'right'}}>
                   {line.qty*line.price > 0 ? fmt(line.qty*line.price) : '0'}
                 </div>
