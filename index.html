@@ -474,9 +474,10 @@ function RightPanel({ accent, onAccentChange, invoiceTotal }) {
       time:'31/03/2026 · 10:52', text:'Gracias por revisarlo tan rápido María!' },
   ]);
   const [msgInput, setMsgInput] = useState('');
-  const msgsEndRef = React.useRef(null);
+  const panelScrollRef = React.useRef(null);
   React.useEffect(() => {
-    msgsEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    const el = panelScrollRef.current;
+    if (el) el.scrollTop = el.scrollHeight;
   }, [msgs]);
 
   const sendMsg = () => {
@@ -529,7 +530,7 @@ function RightPanel({ accent, onAccentChange, invoiceTotal }) {
       </div>
 
       {/* ── CONTENT ── */}
-      <div className="panel-scroll"
+      <div className="panel-scroll" ref={panelScrollRef}
         style={{
           flex:1, overflowY:'auto',
           padding:'24px 30px',
@@ -683,7 +684,6 @@ function RightPanel({ accent, onAccentChange, invoiceTotal }) {
             </div>
             );
           })}
-          <div ref={msgsEndRef} />
         </React.Fragment>}
 
         {/* ═══════ HISTORIAL ═══════ */}
