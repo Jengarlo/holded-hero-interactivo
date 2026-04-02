@@ -326,8 +326,9 @@ function InvoiceCard({ accent, onTotalChange }) {
                 onMouseLeave={() => isNew && setHoveredId(null)}
                 onFocus={() => isNew && setFocusedId(line.id)}
                 onBlur={() => isNew && setFocusedId(null)}
+                onClick={e => { if (isNew && e.target === e.currentTarget) e.currentTarget.querySelector('input')?.focus(); }}
                 style={{
-                  position:'relative', height:52,
+                  position:'relative', height:52, cursor: isNew ? 'text' : 'default',
                   background: (isNew && focusedId === line.id) ? hexRgba(accent, 0.10) : 'transparent',
                 }}>
                 {isNew
