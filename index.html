@@ -247,7 +247,8 @@ function InvoiceCard({ accent, onTotalChange }) {
       </div>
 
       {/* ── CLIENTE + TOTAL (100px) ── */}
-      <div style={{flexShrink:0, position:'relative', height:100, borderBottom:'1px solid #f3f4f6'}}>
+      <div style={{flexShrink:0, position:'relative', height:100}}>
+        <div style={{position:'absolute', bottom:0, left:P, right:P, height:1, background:'#f3f4f6'}} />
         <div style={{position:'absolute', left:P, top:16, fontSize:9, fontWeight:700, color:'#9ca3af', letterSpacing:'0.06em'}}>CLIENTE</div>
         <div style={{position:'absolute', left:P, top:30, fontSize:14, fontWeight:600, color:'#374151'}}>Proyecto Volta S.L.</div>
         <div style={{position:'absolute', left:P, top:50, fontSize:10, fontWeight:500, color:'#9ca3af'}}>08027 Barcelona</div>
@@ -257,7 +258,8 @@ function InvoiceCard({ accent, onTotalChange }) {
       </div>
 
       {/* ── CABECERAS COLUMNAS (37px) ── */}
-      <div style={{flexShrink:0, position:'relative', height:37, borderBottom:'1px solid #f3f4f6'}}>
+      <div style={{flexShrink:0, position:'relative', height:37}}>
+        <div style={{position:'absolute', bottom:0, left:P, right:P, height:1, background:'#f3f4f6'}} />
         <div style={{position:'absolute', left:P,   top:14, fontSize:9, fontWeight:700, color:'#9ca3af', letterSpacing:'0.06em'}}>DESCRIPCIÓN</div>
         <div style={{position:'absolute', left:354, top:14, fontSize:9, fontWeight:700, color:'#9ca3af', letterSpacing:'0.06em'}}>CANTIDAD</div>
         <div style={{position:'absolute', left:455, top:14, fontSize:9, fontWeight:700, color:'#9ca3af', letterSpacing:'0.06em'}}>PRECIO</div>
@@ -320,7 +322,8 @@ function InvoiceCard({ accent, onTotalChange }) {
       </div>
 
       {/* ── FOOTER ── */}
-      <div style={{flexShrink:0, borderTop:'1px solid #f3f4f6', padding:`14px ${P}px`}}>
+      <div style={{flexShrink:0, padding:`${P}px`}}>
+        <div style={{height:1, background:'#f3f4f6', marginBottom:P}} />
         <div style={{display:'flex', justifyContent:'space-between', alignItems:'flex-start', gap:16}}>
           <div>
             <div style={{fontSize:11, fontWeight:600, color:'#6b7280', marginBottom:6}}>Información y detalles de pago</div>
