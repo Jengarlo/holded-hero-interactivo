@@ -313,7 +313,7 @@ function InvoiceCard({ accent, onTotalChange }) {
                 }
                 {!isNew && <div style={{position:'absolute', left:P, top:28, fontSize:11, fontWeight:400, color:'#9ca3af', lineHeight:'13px'}}>{line.desc}</div>}
                 {isNew
-                  ? <input type="number" min="0" value={line.qty} onChange={e=>updateLine(line.id,'qty',e.target.value)}
+                  ? <input type="number" min="0" value={line.qty||''} placeholder="0" onChange={e=>updateLine(line.id,'qty',e.target.value)}
                       style={inpStyle({left:375, top:19, width:50, fontSize:13, fontWeight:400, color:'#374151'})} />
                   : <div style={{position:'absolute', left:375, top:15, fontSize:13, fontWeight:400, color:'#374151'}}>{line.qty}</div>
                 }
