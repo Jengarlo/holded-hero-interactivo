@@ -50,10 +50,30 @@
     @media (max-width: 500px)  { .mockup-scale { transform: scale(0.31); } }
     @media (max-width: 400px)  { .mockup-scale { transform: scale(0.25); } }
     .msg-input:focus { border-color: #1963ef !important; outline: none; }
-    .verifactu-badge { transition: filter .3s ease, transform .3s ease; cursor: pointer; }
-    .verifactu-badge:hover {
-      filter: drop-shadow(0 0 10px rgba(0,210,230,.75)) drop-shadow(0 0 28px rgba(0,180,210,.45));
-      transform: scale(1.07);
+    .verifactu-badge { cursor: pointer; position: relative; transition: transform .3s ease; }
+    .verifactu-badge:hover { transform: scale(1.05); }
+    .verifactu-badge::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: linear-gradient(
+        115deg,
+        transparent 30%,
+        rgba(255,255,255,0.7) 50%,
+        transparent 70%
+      );
+      background-size: 250% 100%;
+      background-position: 200% center;
+      opacity: 0;
+    }
+    .verifactu-badge:hover::after {
+      opacity: 1;
+      animation: destello .55s ease forwards;
+    }
+    @keyframes destello {
+      from { background-position: 200% center; }
+      to   { background-position: -50% center; }
     }
   </style>
 </head>
