@@ -236,7 +236,7 @@ function InvoiceCard({ accent, onTotalChange }) {
   const [lastNewId, setLastNewId] = React.useState(null);
   const addLine = () => {
     const id = Date.now();
-    setLines(l => [...l, { id, name:'', desc:'', qty:1, price:0 }]);
+    setLines(l => [...l, { id, name:'', desc:'', qty:0, price:0 }]);
     setLastNewId(id);
   };
   const updateLine = (id, field, val) => setLines(l => l.map(ln =>
