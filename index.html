@@ -94,7 +94,12 @@
       10%  { opacity: 1; }
       100% { left: 130%; opacity: 0.5; }
     }
-    .verifactu-intro .verifactu-shine { animation: destello 1.2s ease 0.8s forwards; }
+    .verifactu-intro { animation: verifactu-in 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.4s both; }
+    @keyframes verifactu-in {
+      0%   { transform: scale(0.5); opacity: 0; }
+      100% { transform: scale(1);   opacity: 1; }
+    }
+    .verifactu-intro .verifactu-shine { animation: destello 1.2s ease 1s forwards; }
   </style>
 </head>
 <body>
