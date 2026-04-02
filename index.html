@@ -39,6 +39,7 @@
     .aprobar-btn:hover { color: #1448c8 !important; }
     .enviar-btn { transition: opacity .15s, transform .1s; }
     .enviar-btn:hover { opacity: .88; }
+    .enviar-btn:hover svg { fill: white; stroke: none; }
     .enviar-btn:active { transform: scale(.98); }
     .add-line-btn { transition: color .12s; }
     .mockup-scale { transform-origin: top center; }
@@ -635,7 +636,7 @@ function RightPanel({ accent, onAccentChange, invoiceTotal }) {
       }}>
         <button className="enviar-btn" style={{
           width:'100%', padding:'10px 20px',
-          background:'#1963ef', color:'white',
+          background: hexRgba(accent, 0.5), color:'white',
           borderRadius:4, fontSize:12, fontWeight:600,
           display:'flex', alignItems:'center', justifyContent:'center', gap:6,
         }}>
