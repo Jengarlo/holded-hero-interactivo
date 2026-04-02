@@ -346,15 +346,15 @@ function InvoiceCard({ accent, onTotalChange }) {
                 {!isNew && <div style={{position:'absolute', left:P, top:28, fontSize:12, fontWeight:400, color:'#9ca3af', lineHeight:'13px'}}>{line.desc}</div>}
                 {isNew
                   ? <input type="number" min="0" value={line.qty||''} placeholder="0" onChange={e=>updateLine(line.id,'qty',e.target.value)}
-                      style={inpStyle({right:186, top:19, width:70, fontSize:12, fontWeight:400, color:'#374151', textAlign:'right'})} />
+                      style={inpStyle({right:216, top:15, width:70, fontSize:12, fontWeight:400, color:'#374151', textAlign:'right'})} />
                   : <div style={{position:'absolute', right:216, top:15, fontSize:12, fontWeight:400, color:'#374151', textAlign:'right', width:60}}>{line.qty} uds.</div>
                 }
                 {isNew
                   ? <input type="number" min="0" value={line.price||''} placeholder="0" onChange={e=>updateLine(line.id,'price',e.target.value)}
-                      style={inpStyle({right:83, top:19, width:80, fontSize:12, fontWeight:400, color:'#374151', textAlign:'right'})} />
+                      style={inpStyle({right:113, top:15, width:80, fontSize:12, fontWeight:400, color:'#374151', textAlign:'right'})} />
                   : <div style={{position:'absolute', right:113, top:15, fontSize:12, fontWeight:400, color:'#374151', textAlign:'right', width:80}}>{line.price > 0 ? fmt(line.price) : '—'}</div>
                 }
-                <div style={{position:'absolute', right:P, top: isNew ? 19 : 15, fontSize:12, fontWeight:600,
+                <div style={{position:'absolute', right:P, top:15, fontSize:12, fontWeight:600,
                   color:'#1f2937', textAlign:'right'}}>
                   {line.qty*line.price > 0 ? fmt(line.qty*line.price) : '—'}
                 </div>
