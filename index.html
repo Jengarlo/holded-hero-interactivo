@@ -404,7 +404,7 @@ function RightPanel({ accent, onAccentChange, invoiceTotal }) {
 
   /* Divider a ancho completo (compensa el padding de 30px) */
   const HR = () => (
-    <div style={{height:1, background:'#d1d5db', margin:'0 -30px', flexShrink:0}} />
+    <div style={{height:1, background:'#d1d5db', flexShrink:0}} />
   );
 
   const SecTitle = ({children}) => (
@@ -430,7 +430,7 @@ function RightPanel({ accent, onAccentChange, invoiceTotal }) {
             className="tab-pill"
             style={{
               flex:1,
-              height:27,
+              height:34,
               fontSize:12, fontWeight:600,
               color:       tab===id ? 'white'   : '#111827',
               background:  tab===id ? '#111827' : '#e5e7eb',
@@ -473,7 +473,7 @@ function RightPanel({ accent, onAccentChange, invoiceTotal }) {
           <div style={{
             background:'#ecfdf5', borderRadius:4,
             padding:12,
-            display:'flex', alignItems:'flex-start', gap:12,
+            display:'flex', alignItems:'center', gap:12,
           }}>
             <img src={A.check} alt="" style={{width:20, height:20, flexShrink:0, display:'block'}} />
             <div>
