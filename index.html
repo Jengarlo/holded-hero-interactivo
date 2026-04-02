@@ -648,25 +648,6 @@ function RightPanel({ accent, onAccentChange, invoiceTotal }) {
             </div>
             );
           })}
-          <div style={{display:'flex', gap:6, paddingLeft:36}}>
-            <input
-              className="msg-input"
-              value={msgInput}
-              onChange={e => setMsgInput(e.target.value)}
-              onKeyDown={e => { if (e.key==='Enter') sendMsg(); }}
-              placeholder="Escribe un mensaje…"
-              style={{
-                flex:1, border:'1px solid #e5e7eb', borderRadius:6,
-                padding:'7px 10px', fontSize:12, color:'#374151',
-              }}
-            />
-            <button onClick={sendMsg} style={{
-              width:32, height:32, borderRadius:6,
-              background:'#1963ef', color:'white', fontSize:20, flexShrink:0,
-              display:'flex', alignItems:'center', justifyContent:'center',
-              lineHeight:1, paddingBottom:2,
-            }}>›</button>
-          </div>
         </React.Fragment>}
 
         {/* ═══════ HISTORIAL ═══════ */}
