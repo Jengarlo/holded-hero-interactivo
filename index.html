@@ -638,12 +638,25 @@ function RightPanel({ accent, onAccentChange, invoiceTotal }) {
               }}>
                 <span style={{fontSize:13, fontWeight:700, color: isOwn ? '#7c5cfc' : '#0891b2'}}>{m.initials}</span>
               </div>
-              <div className="msg-bubble" style={{background:'#f1f2f4', borderRadius:6, padding:'10px 12px', flex:'none', width:'calc(100% - 74px)'}}>
-                <div style={{display:'flex', justifyContent:'space-between', marginBottom:4}}>
-                  <span style={{fontSize:12, fontWeight:600, color:'#374151'}}>{m.name}</span>
-                  <span style={{fontSize:10, color:'#9ca3af'}}>{m.time}</span>
+              <div style={{position:'relative', flex:'none', width:'calc(100% - 74px)'}}>
+                {/* Cola del bubble */}
+                {!isOwn && (
+                  <svg width="7" height="12" viewBox="0 0 7 12" style={{position:'absolute', left:-6, top:10, display:'block'}}>
+                    <path d="M7 0 Q1 6 7 12" fill="#f1f2f4"/>
+                  </svg>
+                )}
+                {isOwn && (
+                  <svg width="7" height="12" viewBox="0 0 7 12" style={{position:'absolute', right:-6, top:10, display:'block'}}>
+                    <path d="M0 0 Q6 6 0 12" fill="#f1f2f4"/>
+                  </svg>
+                )}
+                <div className="msg-bubble" style={{background:'#f1f2f4', borderRadius:6, padding:'10px 12px'}}>
+                  <div style={{display:'flex', justifyContent:'space-between', marginBottom:4}}>
+                    <span style={{fontSize:12, fontWeight:600, color:'#374151'}}>{m.name}</span>
+                    <span style={{fontSize:10, color:'#9ca3af'}}>{m.time}</span>
+                  </div>
+                  <p style={{fontSize:12, color:'#6b7280', lineHeight:'17px'}}>{m.text}</p>
                 </div>
-                <p style={{fontSize:12, color:'#6b7280', lineHeight:'17px'}}>{m.text}</p>
               </div>
             </div>
             );
