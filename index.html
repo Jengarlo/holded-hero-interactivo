@@ -41,7 +41,6 @@
     .enviar-btn:hover { opacity: .88; }
     .enviar-btn:active { transform: scale(.98); }
     .add-line-btn { transition: color .12s; }
-    .add-line-btn:hover { color: #6d3bef !important; }
     .mockup-scale { transform-origin: top center; }
     @media (max-width: 1350px) { .mockup-scale { transform: scale(0.82); } }
     @media (max-width: 1100px) { .mockup-scale { transform: scale(0.68); } }
@@ -325,17 +324,21 @@ function InvoiceCard({ accent, onTotalChange }) {
             </React.Fragment>
           );
         })}
-        <button className="add-line-btn" onClick={addLine} style={{
-          display:'flex', alignItems:'center', gap:6,
-          color:accent, fontSize:11, fontWeight:500,
-          background:'transparent', padding:`10px ${P}px`, height:38,
-        }}>
-          <svg width="10" height="10" viewBox="0 0 10 10">
-            <line x1="5" y1="0" x2="5" y2="10" stroke={accent} strokeWidth="1.5"/>
-            <line x1="0" y1="5" x2="10" y2="5" stroke={accent} strokeWidth="1.5"/>
-          </svg>
-          Añadir línea
-        </button>
+        {(() => {
+          const [hov, setHov] = React.useState(false);
+          const c = hov ? hexRgba(accent, 0.5) : accent;
+          return (
+            <button className="add-line-btn" onClick={addLine}
+              onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
+              style={{display:'flex', alignItems:'center', gap:6, color:c, fontSize:11, fontWeight:500, background:'transparent', padding:`10px ${P}px`, height:38}}>
+              <svg width="10" height="10" viewBox="0 0 10 10">
+                <line x1="5" y1="0" x2="5" y2="10" stroke={c} strokeWidth="1.5"/>
+                <line x1="0" y1="5" x2="10" y2="5" stroke={c} strokeWidth="1.5"/>
+              </svg>
+              Añadir línea
+            </button>
+          );
+        })()}
       </div>
 
       {/* ── FOOTER ── */}
