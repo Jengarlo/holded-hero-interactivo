@@ -626,7 +626,6 @@ function RightPanel({ accent, onAccentChange, invoiceTotal }) {
 
         {/* ═══════ MENSAJES ═══════ */}
         {tab==='mensajes' && <React.Fragment>
-          <div style={{flex:1}} />
           {msgs.map((m,i) => {
             const isOwn = m.name === 'Yo';
             return (
@@ -698,7 +697,7 @@ function RightPanel({ accent, onAccentChange, invoiceTotal }) {
 
       {/* ── INPUT MENSAJE ── */}
       {tab==='mensajes' && <>
-        <div style={{padding:'20px 30px', flexShrink:0, display:'flex', gap:6}}>
+        <div style={{padding:'16px 30px', flexShrink:0, display:'flex', gap:6}}>
           <input
             className="msg-input"
             value={msgInput}
