@@ -449,7 +449,7 @@ function RightPanel({ accent, onAccentChange, invoiceTotal }) {
   const [tab,      setTab]      = useState('general');
   const [approved, setApproved] = useState(false);
   const [msgs,     setMsgs]     = useState([
-    { initials:'MG', color:'#0891b2', name:'María García',
+    { initials:'M',  color:'#0891b2', name:'María García',
       time:'31/03/2026 · 10:45', text:'Factura revisada. Todo correcto, lista para aprobar.' },
     { initials:'B',  color:'#7c5cfc', name:'Tú',
       time:'31/03/2026 · 10:52', text:'Gracias por revisarlo tan rápido María!' },
@@ -633,10 +633,10 @@ function RightPanel({ accent, onAccentChange, invoiceTotal }) {
             <div key={i} style={{display:'flex', gap:8, alignItems:'flex-start', flexDirection: isOwn ? 'row-reverse' : 'row'}}>
               <div style={{
                 width:28, height:28, borderRadius:'50%', flexShrink:0,
-                background: isOwn ? '#f3f0ff' : m.color,
+                background: isOwn ? '#f3f0ff' : '#e0f5fb',
                 display:'flex', alignItems:'center', justifyContent:'center',
               }}>
-                <span style={{fontSize: isOwn ? 13 : 10, fontWeight:700, color: isOwn ? '#7c5cfc' : 'white'}}>{m.initials}</span>
+                <span style={{fontSize:13, fontWeight:700, color: isOwn ? '#7c5cfc' : '#0891b2'}}>{m.initials}</span>
               </div>
               <div className="msg-bubble" style={{background:'#f1f2f4', borderRadius:6, padding:'10px 12px', flex:'none', width:'calc(100% - 74px)'}}>
                 <div style={{display:'flex', justifyContent:'space-between', marginBottom:4}}>
