@@ -50,30 +50,25 @@
     @media (max-width: 500px)  { .mockup-scale { transform: scale(0.31); } }
     @media (max-width: 400px)  { .mockup-scale { transform: scale(0.25); } }
     .msg-input:focus { border-color: #1963ef !important; outline: none; }
-    .verifactu-badge { cursor: pointer; position: relative; transition: transform .3s ease; }
-    .verifactu-badge:hover { transform: scale(1.05); }
-    .verifactu-badge::after {
-      content: '';
+    .verifactu-wrap { position: relative; display: inline-block; cursor: pointer; transition: transform .3s ease; }
+    .verifactu-wrap:hover { transform: scale(1.05); }
+    .verifactu-shine {
       position: absolute;
-      top: -20%; left: -60%;
-      width: 40%; height: 140%;
-      border-radius: 50%;
-      background: linear-gradient(
-        to right,
-        transparent,
-        rgba(255,255,255,0.92) 50%,
-        transparent
-      );
+      top: -10%; left: -70%;
+      width: 45%; height: 120%;
+      background: linear-gradient(to right, transparent, rgba(255,255,255,0.88) 50%, transparent);
       transform: skewX(-15deg);
+      border-radius: 4px;
+      pointer-events: none;
       opacity: 0;
     }
-    .verifactu-badge:hover::after {
-      opacity: 1;
+    .verifactu-wrap:hover .verifactu-shine {
       animation: destello .5s ease forwards;
     }
     @keyframes destello {
-      from { left: -60%; opacity: 1; }
-      to   { left: 130%; opacity: 0.6; }
+      0%   { left: -70%; opacity: 0; }
+      10%  { opacity: 1; }
+      100% { left: 130%; opacity: 0.5; }
     }
   </style>
 </head>
@@ -641,12 +636,11 @@ function App() {
 
       <div className="mockup-scale" style={{position:'relative'}}>
         {/* Verifactu badge */}
-        <img src={A.verifactu} alt="Verifactu Software Certificado"
-          className="verifactu-badge"
-          style={{
-            position:'absolute', top:-59, right:-54,
-            width:112, height:112, zIndex:10, display:'block',
-          }} />
+        <div className="verifactu-wrap" style={{position:'absolute', top:-59, right:-54, width:112, height:112, zIndex:10}}>
+          <img src={A.verifactu} alt="Verifactu Software Certificado"
+            style={{width:112, height:112, display:'block'}} />
+          <div className="verifactu-shine" />
+        </div>
 
         {/* ─── LA CARD ─── */}
         <div style={{
