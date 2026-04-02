@@ -455,6 +455,10 @@ function RightPanel({ accent, onAccentChange, invoiceTotal }) {
       time:'31/03/2026 · 10:52', text:'Gracias por revisarlo tan rápido María!' },
   ]);
   const [msgInput, setMsgInput] = useState('');
+  const msgsEndRef = React.useRef(null);
+  React.useEffect(() => {
+    msgsEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [msgs]);
 
   const sendMsg = () => {
     if (!msgInput.trim()) return;
@@ -660,6 +664,7 @@ function RightPanel({ accent, onAccentChange, invoiceTotal }) {
             </div>
             );
           })}
+          <div ref={msgsEndRef} />
         </React.Fragment>}
 
         {/* ═══════ HISTORIAL ═══════ */}
