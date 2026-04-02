@@ -200,6 +200,8 @@ function InvoiceCard({ accent, onTotalChange }) {
   ]);
 
   const [focusedId, setFocusedId] = React.useState(null);
+  const [hoveredId, setHoveredId] = React.useState(null);
+  const removeLine = (id) => setLines(l => l.filter(ln => ln.id !== id));
 
   const addLine    = () => setLines(l => [...l, { id:Date.now(), name:'Nuevo concepto', desc:'', qty:1, price:0 }]);
   const updateLine = (id, field, val) => setLines(l => l.map(ln =>
@@ -278,6 +280,8 @@ function InvoiceCard({ accent, onTotalChange }) {
           return (
             <React.Fragment key={line.id}>
               <div
+                onMouseEnter={() => isNew && setHoveredId(line.id)}
+                onMouseLeave={() => isNew && setHoveredId(null)}
                 onFocus={() => isNew && setFocusedId(line.id)}
                 onBlur={() => isNew && setFocusedId(null)}
                 style={{
@@ -304,6 +308,18 @@ function InvoiceCard({ accent, onTotalChange }) {
                   color:'#1f2937', textAlign:'right'}}>
                   {line.qty*line.price > 0 ? fmt(line.qty*line.price) : '—'}
                 </div>
+                {isNew && hoveredId === line.id && (
+                  <button
+                    onMouseDown={e => { e.preventDefault(); removeLine(line.id); }}
+                    style={{
+                      position:'absolute', right:P, top:'50%', transform:'translateY(-50%)',
+                      width:20, height:20, borderRadius:'50%',
+                      background:'#fee2e2', color:'#ef4444',
+                      fontSize:14, lineHeight:1,
+                      display:'flex', alignItems:'center', justifyContent:'center',
+                      flexShrink:0, zIndex:2,
+                    }}>×</button>
+                )}
               </div>
               <D />
             </React.Fragment>
