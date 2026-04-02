@@ -451,7 +451,7 @@ function RightPanel({ accent, onAccentChange, invoiceTotal }) {
   const [msgs,     setMsgs]     = useState([
     { initials:'M',  color:'#0891b2', name:'María García',
       time:'31/03/2026 · 10:45', text:'Factura revisada. Todo correcto, lista para aprobar.' },
-    { initials:'B',  color:'#7c5cfc', name:'Tú',
+    { initials:'B',  color:'#7c5cfc', name:'Yo',
       time:'31/03/2026 · 10:52', text:'Gracias por revisarlo tan rápido María!' },
   ]);
   const [msgInput, setMsgInput] = useState('');
@@ -459,7 +459,7 @@ function RightPanel({ accent, onAccentChange, invoiceTotal }) {
   const sendMsg = () => {
     if (!msgInput.trim()) return;
     setMsgs(p => [...p, {
-      initials:'B', color:'#7c5cfc', name:'Tú', time:'ahora', text:msgInput.trim()
+      initials:'B', color:'#7c5cfc', name:'Yo', time:'ahora', text:msgInput.trim()
     }]);
     setMsgInput('');
   };
@@ -628,7 +628,7 @@ function RightPanel({ accent, onAccentChange, invoiceTotal }) {
         {tab==='mensajes' && <React.Fragment>
           <div style={{marginTop:4}} />
           {msgs.map((m,i) => {
-            const isOwn = m.name === 'Tú';
+            const isOwn = m.name === 'Yo';
             return (
             <div key={i} style={{display:'flex', gap:8, alignItems:'flex-start', flexDirection: isOwn ? 'row-reverse' : 'row'}}>
               <div style={{
