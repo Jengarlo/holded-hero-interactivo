@@ -55,25 +55,25 @@
     .verifactu-badge::after {
       content: '';
       position: absolute;
-      inset: 0;
+      top: -20%; left: -60%;
+      width: 40%; height: 140%;
       border-radius: 50%;
       background: linear-gradient(
-        115deg,
-        transparent 30%,
-        rgba(255,255,255,0.7) 50%,
-        transparent 70%
+        to right,
+        transparent,
+        rgba(255,255,255,0.92) 50%,
+        transparent
       );
-      background-size: 250% 100%;
-      background-position: 200% center;
+      transform: skewX(-15deg);
       opacity: 0;
     }
     .verifactu-badge:hover::after {
       opacity: 1;
-      animation: destello .55s ease forwards;
+      animation: destello .5s ease forwards;
     }
     @keyframes destello {
-      from { background-position: 200% center; }
-      to   { background-position: -50% center; }
+      from { left: -60%; opacity: 1; }
+      to   { left: 130%; opacity: 0.6; }
     }
   </style>
 </head>
