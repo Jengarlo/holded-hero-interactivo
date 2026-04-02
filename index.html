@@ -376,12 +376,12 @@ function InvoiceCard({ accent, onTotalChange }) {
           return (
             <button className="add-line-btn" onClick={addLine}
               onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
-              style={{display:'flex', alignItems:'center', gap:6, color:c, fontSize:11, fontWeight:500, background:'transparent', padding:`10px ${P}px`, height:38}}>
+              style={{display:'flex', alignItems:'center', gap:6, color:c, fontSize:12, fontWeight:500, background:'transparent', padding:`10px ${P}px`, height:38}}>
               <svg width="10" height="10" viewBox="0 0 10 10">
                 <line x1="5" y1="0" x2="5" y2="10" stroke={c} strokeWidth="1.5"/>
                 <line x1="0" y1="5" x2="10" y2="5" stroke={c} strokeWidth="1.5"/>
               </svg>
-              + Añadir artículo
+              Añadir artículo
             </button>
           );
         })()}
