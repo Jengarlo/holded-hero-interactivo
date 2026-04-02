@@ -350,8 +350,8 @@ function InvoiceCard({ accent, onTotalChange }) {
                   : <div style={{position:'absolute', right:113, top:15, fontSize:12, fontWeight:400, color:'#374151', textAlign:'right', width:80}}>{line.price > 0 ? fmt(line.price) : '—'}</div>
                 }
                 <div style={{position:'absolute', right:P, top:15, fontSize:12, fontWeight:600,
-                  color:'#1f2937', textAlign:'right'}}>
-                  {line.qty*line.price > 0 ? fmt(line.qty*line.price) : '—'}
+                  color: line.qty*line.price > 0 ? '#1f2937' : '#9ca3af', textAlign:'right'}}>
+                  {line.qty*line.price > 0 ? fmt(line.qty*line.price) : '0'}
                 </div>
                 {isNew && hoveredId === line.id && (
                   <button
