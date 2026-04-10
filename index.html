@@ -134,15 +134,15 @@ const { useState } = React;
 
 /* ── Figma assets ──────────────────────────────────────── */
 const A = {
-  diamond:  "https://www.figma.com/api/mcp/asset/37f252ff-bb3e-482f-8491-dba747618207",
-  avatar:   "https://www.figma.com/api/mcp/asset/a3d34512-7c3f-4fb3-914f-cee516508a20",
-  group:    "https://www.figma.com/api/mcp/asset/456f4523-ff1f-4cc7-afe1-313688d78ffa",
-  qr:       "https://www.figma.com/api/mcp/asset/524870ad-6051-4279-a59b-d870b73fb6ec",
-  check:    "https://www.figma.com/api/mcp/asset/f9a360f0-e056-40a0-b95a-f68de37a22ae",
-  dot:      "https://www.figma.com/api/mcp/asset/78ab2833-1c3c-43d5-8d93-80b7af529aa7",
-  brandDot: "https://www.figma.com/api/mcp/asset/11bebaac-8986-4543-bbf6-d6ee86afaf96",
-  verifactu:"https://www.figma.com/api/mcp/asset/92317a70-5310-479b-9b0c-c7270b87d003",
-  onlineDot:"https://www.figma.com/api/mcp/asset/724cbe14-c2b1-4cce-b447-90995947087c",
+  diamond:  "data:image/svg+xml,%3Csvg width='16' height='14' viewBox='0 0 16 14' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8 0L15.5 7L8 14L0.5 7Z' fill='white'/%3E%3C/svg%3E",
+  avatar:   "data:image/svg+xml,%3Csvg width='32' height='32' viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='16' cy='16' r='16' fill='%23e5e7eb'/%3E%3Ccircle cx='16' cy='12' r='5' fill='%239ca3af'/%3E%3Cpath d='M6 28c0-5.5 4.5-10 10-10s10 4.5 10 10' fill='%239ca3af'/%3E%3C/svg%3E",
+  group:    "data:image/svg+xml,%3Csvg width='26' height='26' viewBox='0 0 26 26' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='1' y='1' width='11' height='11' rx='2.5' fill='white'/%3E%3Crect x='14' y='1' width='11' height='11' rx='2.5' fill='white' opacity='0.7'/%3E%3Crect x='1' y='14' width='11' height='11' rx='2.5' fill='white' opacity='0.7'/%3E%3Crect x='14' y='14' width='11' height='11' rx='2.5' fill='white' opacity='0.4'/%3E%3C/svg%3E",
+  qr:       "data:image/svg+xml,%3Csvg width='76' height='76' viewBox='0 0 76 76' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='76' height='76' fill='white'/%3E%3C/svg%3E",
+  check:    "data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='10' cy='10' r='10' fill='%2316a34a'/%3E%3Cpath d='M6 10.5l2.5 2.5 5.5-6' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E",
+  dot:      "data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='3' cy='3' r='3' fill='%239ca3af'/%3E%3C/svg%3E",
+  brandDot: "data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='3' cy='3' r='3' fill='%237c5cfc'/%3E%3C/svg%3E",
+  verifactu:"badge-verifactu-es.svg",
+  onlineDot:"data:image/svg+xml,%3Csvg width='8' height='8' viewBox='0 0 8 8' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='4' cy='4' r='4' fill='%2322c55e'/%3E%3C/svg%3E",
 };
 
 /* Swatches exactos del Figma */
@@ -589,7 +589,7 @@ function RightPanel({ accent, onAccentChange, invoiceTotal }) {
                 display:'inline-flex', alignItems:'center', gap:4,
                 background:'#ebfbf5', borderRadius:6, padding:'4px 9px',
               }}>
-                <img src="https://www.figma.com/api/mcp/asset/8d2a9d83-a7ea-4a61-8560-786a6ff92801" alt="" style={{width:8, height:8, display:'block'}} />
+                <img src="data:image/svg+xml,%3Csvg width='8' height='8' viewBox='0 0 8 8' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='4' cy='4' r='4' fill='%2316a34a'/%3E%3C/svg%3E" alt="" style={{width:8, height:8, display:'block'}} />
                 <span style={{fontSize:12, fontWeight:600, color:'#1b8751', lineHeight:'14px'}}>Aprobada</span>
               </div>
             ) : (
